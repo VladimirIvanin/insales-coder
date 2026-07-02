@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "provider": {
+    "name": "Vladimir Ivanin",
+    "repository": "https://github.com/VladimirIvanin/insales-coder",
+    "branch": "master",
+    "homepage": "https://github.com/VladimirIvanin/insales-coder"
+  },
+  "skills": [
+    {
+      "name": "insales-coder",
+      "description": "Разработка виджетов InSales 4-го поколения — архитектура (info.json, settings_form, snippet.liquid/scss/js, EventBus, иконки), common.js (Cart, Products, EventBus, ajax-товары, формы), Liquid InSales (переменные, фильтры, {% cache %}, {% prefetch %}), ключи кеша, оптимизация collection.menu_image, миграция Splide→TvistV1. Применяй при создании или доработке виджетов, liquid-сниппетов, snippet.js, рефакторинге кеша, замене Splide на Tvist.",
+      "location": "https://github.com/VladimirIvanin/insales-coder/tree/master/skills/insales-coder"
+    }
+  ]
+}
