@@ -30,12 +30,6 @@ const WIDGET_LIST_KINDS = new Set([
 
 const INTERFACE_TYPES = new Set(['lite', 'service', 'pro'])
 
-const KNOWN_LIBRARIES = new Set([
-  'commonjs_v2', 'jquery', 'my-layout', 'vanilla-lazyload',
-  'splide', 'splide3', 'fslightbox', 'micromodal', 'body-scroll-lock',
-  'js-cookie', 'cut-list', 'nouislider', 'microalert', 'tvist-v1'
-])
-
 const ALLOWED_TOP_LEVEL_KEYS = new Set([
   'generation', 'type', 'handle', 'sku', 'page_kinds', 'widget_list_kinds',
   'widget_category_handle', 'name', 'description', 'libraries', 'visibility',
@@ -233,7 +227,7 @@ export function validateInfoJson(info) {
     errors.push('block_template_handle: не используется для SimpleWidgetType — удалите поле')
   }
 
-  // libraries
+  // libraries — только формат; актуальные handle см. WidgetLibrary в бэкенде
   if (data.libraries !== undefined && data.libraries !== null) {
     if (!Array.isArray(data.libraries)) {
       errors.push('libraries: должен быть массивом строк')
@@ -243,8 +237,8 @@ export function validateInfoJson(info) {
           errors.push(`libraries[${index}]: элемент должен быть строкой`)
           return
         }
-        if (!KNOWN_LIBRARIES.has(lib)) {
-          warnings.push(`libraries[${index}]: неизвестная библиотека "${lib}" — проверьте handle в WidgetLibrary`)
+        if (!lib.trim()) {
+          errors.push(`libraries[${index}]: handle не может быть пустым`)
         }
       })
     }

@@ -56,7 +56,7 @@ node skills/insales-coder/scripts/validate-info-json.mjs --self-test
 | Поле | Формат |
 |------|--------|
 | `description` | Строка или объект переводов |
-| `libraries` | Массив handle библиотек: `commonjs_v2`, `jquery`, `my-layout`, `vanilla-lazyload`, `splide`, `splide3`, `fslightbox`, `micromodal`, `body-scroll-lock`, `js-cookie`, `cut-list`, `nouislider`, `microalert`, `tvist-v1` |
+| `libraries` | Массив строк — handle из `WidgetLibrary` (валидатор проверяет только формат, не whitelist) |
 | `visibility` | Массив: `lite`, `service`, `pro` |
 
 ---
