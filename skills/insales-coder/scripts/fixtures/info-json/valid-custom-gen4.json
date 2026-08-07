@@ -1,0 +1,10 @@
+{
+  "generation": 4,
+  "type": "block_list_widget_type",
+  "handle": "my_custom_widget_1",
+  "page_kinds": ["index", "page"],
+  "widget_list_kinds": ["content"],
+  "widget_category_handle": "drugie",
+  "block_template_handle": "system-image-and-content",
+  "name": "Мой кастомный виджет"
+}

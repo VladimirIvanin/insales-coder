@@ -1,0 +1,10 @@
+{
+  "generation": 4,
+  "type": "BlockListWidgetType",
+  "handle": "system_widget_blocks_1",
+  "sku": "BC1",
+  "page_kinds": ["all"],
+  "widget_list_kinds": ["content"],
+  "widget_category_handle": "drugie",
+  "name": { "ru": "Блоки" }
+}

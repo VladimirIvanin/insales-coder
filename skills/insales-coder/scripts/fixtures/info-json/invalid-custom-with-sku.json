@@ -1,0 +1,10 @@
+{
+  "generation": 4,
+  "type": "SimpleWidgetType",
+  "handle": "my_custom_widget_1",
+  "sku": "CU1",
+  "page_kinds": ["all"],
+  "widget_list_kinds": ["content"],
+  "widget_category_handle": "banner",
+  "name": { "ru": "Кастомный виджет" }
+}

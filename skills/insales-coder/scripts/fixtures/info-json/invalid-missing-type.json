@@ -1,0 +1,7 @@
+{
+  "handle": "system_widget_test",
+  "page_kinds": ["all"],
+  "widget_list_kinds": ["content"],
+  "widget_category_handle": "drugie",
+  "name": "Тест"
+}

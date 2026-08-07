@@ -23,12 +23,18 @@ description: Разработка виджетов InSales 4-го поколен
 ## Порядок работы агента
 
 1. **Новый виджет** → `widget-architecture/reference.md` (структура файлов, info.json, settings).
-2. **Liquid в snippet.liquid** → `insales-liquid/reference.md` + при необходимости `fields.md`, `liquid-widget-cache-keys/reference.md`, `liquid-collection-menu-image/reference.md`.
-3. **JavaScript в snippet.js** → `commonjs-widget/reference.md`; для слайдеров — `splide-to-tvist/reference.md`.
-4. **Не придумывать** поля Liquid и API common.js — сверяться со справочниками и [Liquidhub](https://liquidhub.ru/collection/shpargalka-liquid).
+2. **После создания/правки info.json** → запустить валидатор:
+   ```bash
+   node skills/insales-coder/scripts/validate-info-json.mjs path/to/widget-folder
+   ```
+   Правила и типичные ошибки → [widget-architecture/info-json-validation.md](widget-architecture/info-json-validation.md).
+   **sku только у системных виджетов** (`handle` начинается с `system_`); у кастомных — не указывать.
+3. **Liquid в snippet.liquid** → `insales-liquid/reference.md` + при необходимости `fields.md`, `liquid-widget-cache-keys/reference.md`, `liquid-collection-menu-image/reference.md`.
+4. **JavaScript в snippet.js** → `commonjs-widget/reference.md`; для слайдеров — `splide-to-tvist/reference.md`.
+5. **Не придумывать** поля Liquid и API common.js — сверяться со справочниками и [Liquidhub](https://liquidhub.ru/collection/shpargalka-liquid).
 
 ## Дополнительные справочники
 
-- **widget-architecture:** [settings-reference.md](widget-architecture/settings-reference.md), [core-css-reference.md](widget-architecture/core-css-reference.md), [icons-reference.md](widget-architecture/icons-reference.md), [icons-editor-reference.md](widget-architecture/icons-editor-reference.md)
+- **widget-architecture:** [info-json-validation.md](widget-architecture/info-json-validation.md), [settings-reference.md](widget-architecture/settings-reference.md), [core-css-reference.md](widget-architecture/core-css-reference.md), [icons-reference.md](widget-architecture/icons-reference.md), [icons-editor-reference.md](widget-architecture/icons-editor-reference.md)
 - **commonjs-widget:** [markup.md](commonjs-widget/markup.md), [js-api.md](commonjs-widget/js-api.md), [ajax-components.md](commonjs-widget/ajax-components.md), [forms.md](commonjs-widget/forms.md), [patterns.md](commonjs-widget/patterns.md)
 - **splide-to-tvist:** [api-map.md](splide-to-tvist/api-map.md), [patterns.md](splide-to-tvist/patterns.md), [tvist-reference.md](splide-to-tvist/tvist-reference.md)

@@ -1,0 +1,12 @@
+{
+  "generation": 4,
+  "type": "SimpleWidgetType",
+  "handle": "system_widget_banner_1",
+  "sku": "BB1",
+  "page_kinds": ["all"],
+  "widget_list_kinds": ["content", "before_content"],
+  "widget_category_handle": "banner",
+  "name": { "ru": "Баннер", "en": "Banner" },
+  "description": { "ru": "Описание", "en": "Description" },
+  "libraries": ["jquery", "my-layout"]
+}

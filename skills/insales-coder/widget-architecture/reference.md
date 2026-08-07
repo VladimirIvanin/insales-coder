@@ -90,20 +90,39 @@ $widget.each(function(index, el) {
 
 ## info.json
 
+**Системный виджет** (`handle` начинается с `system_`):
+
 ```json
 {
   "generation": 4,
   "type": "SimpleWidgetType",
-  "handle": "my_widget_1",
-  "sku": "MW1",
+  "handle": "system_widget_banner_1",
+  "sku": "BB1",
   "page_kinds": ["all"],
   "widget_list_kinds": ["before_content", "content", "after_content", "footer"],
   "widget_category_handle": "banner",
-  "name": { "ru": "Мой виджет", "en": "My widget" },
+  "name": { "ru": "Баннер", "en": "Banner" },
   "description": { "ru": "Описание", "en": "Description" },
   "libraries": ["jquery", "my-layout", "vanilla-lazyload"]
 }
 ```
+
+**Кастомный виджет** (handle без `system_`) — **без `sku`**, sku генерирует бэкенд:
+
+```json
+{
+  "generation": 4,
+  "type": "block_list_widget_type",
+  "handle": "my_widget_1",
+  "page_kinds": ["all"],
+  "widget_list_kinds": ["content"],
+  "widget_category_handle": "banner",
+  "block_template_handle": "system-image-and-content",
+  "name": { "ru": "Мой виджет", "en": "My widget" }
+}
+```
+
+После правки запускай валидатор → [info-json-validation.md](info-json-validation.md).
 
 **Типы виджетов:**
 - `"SimpleWidgetType"` — без блоков

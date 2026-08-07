@@ -40,6 +40,8 @@ npx skills add VladimirIvanin/insales-coder --agent cursor -y
 skills/
 └── insales-coder/
     ├── SKILL.md
+    ├── scripts/
+    │   └── validate-info-json.mjs   # валидатор info.json
     ├── widget-architecture/
     ├── commonjs-widget/
     ├── insales-liquid/
@@ -47,6 +49,14 @@ skills/
     ├── liquid-collection-menu-image/
     └── splide-to-tvist/
 ```
+
+## Валидация info.json
+
+```bash
+node skills/insales-coder/scripts/validate-info-json.mjs path/to/widget-folder
+```
+
+Проверяет обязательные поля, enum-значения и правило **sku только для системных виджетов** (`handle` → `system_*`).
 
 ## Когда применять
 
