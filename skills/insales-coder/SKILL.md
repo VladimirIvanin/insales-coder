@@ -32,6 +32,8 @@ description: Разработка виджетов InSales 4-го поколен
 3. **Liquid в snippet.liquid** → `insales-liquid/reference.md` + при необходимости `fields.md`, `liquid-widget-cache-keys/reference.md`, `liquid-collection-menu-image/reference.md`.
 4. **JavaScript в snippet.js** → `commonjs-widget/reference.md`; для слайдеров — `splide-to-tvist/reference.md`.
 5. **Не придумывать** поля Liquid и API common.js — сверяться со справочниками и [Liquidhub](https://liquidhub.ru/collection/shpargalka-liquid).
+6. **Перенос макета** → следовать его карте секций: каждой самостоятельной секции нужен редактируемый экземпляр виджета. Сверять главную, каталог и карточку на контрольных ширинах макета, проверять фильтры, варианты, корзину и слайдер действием в браузере. Успешное сохранение исходников не доказывает совпадения с макетом.
+7. **Перед публикацией виджета** → форматировать `snippet.liquid`, `snippet.scss` и JSON; проверять подписи настроек, `my-layout`, CSS-переменные и зависимости кеша. Для слайдера использовать `snippet.js` с подходящей библиотекой (например TvistV1), если в макете ожидаются интерактивность и свайп.
 
 ## Дополнительные справочники
 

@@ -63,9 +63,13 @@
 --bg-half-shade: #808080
 --color-accent-text: /* цвет ссылок */
 --color-btn-bg: #6360e0
---color-btn-text: #ffffff
+--color-btn-color: #ffffff
 --color-error: /* цвет ошибок */
 ```
+
+Для текста на `--color-btn-bg` используй `var(--color-btn-color)`. Переменной `--color-btn-text` в `my-layout` нет. После `@include background-color(--bg)` значение `--color-text` уже контрастирует с фоном виджета: на светлом фоне оно тёмное, на тёмном — светлое. Проверяй результат при смене `bg` в редакторе.
+
+Корневые свойства виджета, например шрифт и цвет, пиши в `& { ... }` внутри `snippet.scss`; правила и Liquid-разметку форматируй по строкам.
 
 ---
 

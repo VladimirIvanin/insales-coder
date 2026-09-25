@@ -16,6 +16,8 @@
 | `hide_mobile` | boolean | Скрыть в мобильном редакторе |
 | `class` | string | CSS-класс поля (например `"range"` для ползунка) |
 
+Для редактируемых полей указывай читаемый `label`. Сохраняй `settings_form.json` и `settings_data.json` с отступом в два пробела. Для числового ползунка задай `min`, `max`, `step`, `unit`; `with_btns: true` добавляет кнопки изменения значения.
+
 ---
 
 ## Типы полей
@@ -300,14 +302,14 @@
   "design": [
     {
       "items": [
-        { "name": "bg", "type": "color", "clearable": true },
-        { "name": "layout-wide-bg", "type": "checkbox" },
-        { "class": "range", "name": "layout-pt", "type": "number", "min": 0, "max": 10, "step": 0.5, "unit": "vw" },
-        { "class": "range", "name": "layout-pb", "type": "number", "min": 0, "max": 10, "step": 0.5, "unit": "vw" },
-        { "name": "layout-wide-content", "type": "checkbox" },
-        { "name": "layout-edge", "type": "checkbox" },
-        { "name": "hide-desktop", "type": "checkbox" },
-        { "name": "hide-mobile", "type": "checkbox" }
+        { "name": "bg", "label": "Фон", "type": "color", "clearable": true },
+        { "name": "layout-wide-bg", "label": "Фон на всю ширину", "type": "checkbox" },
+        { "class": "range", "name": "layout-pt", "label": "Отступ сверху", "type": "number", "min": 0, "max": 10, "step": 0.5, "unit": "vw", "with_btns": true },
+        { "class": "range", "name": "layout-pb", "label": "Отступ снизу", "type": "number", "min": 0, "max": 10, "step": 0.5, "unit": "vw", "with_btns": true },
+        { "name": "layout-wide-content", "label": "Контент на всю ширину", "type": "checkbox" },
+        { "name": "layout-edge", "label": "Убрать боковые отступы", "type": "checkbox" },
+        { "name": "hide-desktop", "label": "Скрыть на десктопе", "type": "checkbox" },
+        { "name": "hide-mobile", "label": "Скрыть на мобильном", "type": "checkbox" }
       ]
     }
   ]
