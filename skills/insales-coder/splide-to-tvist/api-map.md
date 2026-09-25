@@ -151,8 +151,8 @@
 | Splide | TvistV1 |
 |---|---|
 | `.splide` | `.tvist-v1` |
-| `.splide__track` | `.tvist-v1__container` |
-| `.splide__list` | (убрать) |
+| `.splide__track` | `.tvist-v1__track` |
+| `.splide__list` | `.tvist-v1__container` |
 | `.splide__slide` | `.tvist-v1__slide` |
 | `.splide__arrows` | `.tvist-v1__arrows` |
 | `.splide__arrow` | `.tvist-v1__arrow` |

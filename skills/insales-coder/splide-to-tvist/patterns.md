@@ -41,10 +41,12 @@ const tvist = new TvistV1(sliderRoot, {
 
 ```html
 <div class="tvist-v1">
-  <div class="tvist-v1__container">
-    {% for item in items %}
-      <div class="tvist-v1__slide">...</div>
-    {% endfor %}
+  <div class="tvist-v1__track">
+    <div class="tvist-v1__container">
+      {% for item in items %}
+        <div class="tvist-v1__slide">...</div>
+      {% endfor %}
+    </div>
   </div>
   <div class="tvist-v1__pagination"></div>
 </div>
@@ -111,8 +113,10 @@ tvist.on('unlock', () => {
   <button class="js-arrow-next">→</button>
 </div>
 <div class="tvist-v1">
-  <div class="tvist-v1__container">
-    <div class="tvist-v1__slide">...</div>
+  <div class="tvist-v1__track">
+    <div class="tvist-v1__container">
+      <div class="tvist-v1__slide">...</div>
+    </div>
   </div>
 </div>
 ```
@@ -389,19 +393,21 @@ tvist.on('resized', () => {
 ```html
 <div
   class="my-slider tvist-v1"
-  data-slide-gap="{{ widget.settings.gap | default: 16 }}"
-  data-slide-min-width="{{ widget.settings.slide_min_width | default: 280 }}"
+  data-slide-gap="{{ widget_settings.slide-gap | default: 16 }}"
+  data-slide-min-width="{{ widget_settings.slide-width | default: 280 }}"
 >
   <div class="my-slider__arrows js-arrows-wrap">
     <button class="my-slider__arrow my-slider__arrow--prev js-arrow-prev">←</button>
     <button class="my-slider__arrow my-slider__arrow--next js-arrow-next">→</button>
   </div>
-  <div class="tvist-v1__container">
-    {% for item in items %}
-      <div class="tvist-v1__slide">
-        <!-- контент слайда -->
-      </div>
-    {% endfor %}
+  <div class="tvist-v1__track">
+    <div class="tvist-v1__container">
+      {% for item in items %}
+        <div class="tvist-v1__slide">
+          <!-- контент слайда -->
+        </div>
+      {% endfor %}
+    </div>
   </div>
   <div class="tvist-v1__pagination"></div>
 </div>

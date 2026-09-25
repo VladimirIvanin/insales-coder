@@ -58,7 +58,7 @@
 
 ### 1. Вывод превью или запасного варианта
 
-Если видео не поддерживается (например, VK), `video_preview_by_url` вернёт пустоту. В таком случае можно подставить запасную заглушку-картинку:
+Если видео не поддерживается (например, VK), `video_preview_by_url` вернёт пустоту. В таком случае покажи текстовую заглушку или изображение из настроек виджета, если оно есть:
 
 ```liquid
 {% assign video_preview_url = link.url | video_preview_by_url %}
@@ -66,10 +66,13 @@
 
 {% unless video_preview_url %}
   {% assign video_unsupported = true %}
-  {% assign video_preview_url = 'https://static.insales-cdn.com/files/1/4301/24817869/original/play-button.png' %}
 {% endunless %}
 
-<img src="{{ video_preview_url }}" alt="Превью видео">
+{% if video_preview_url %}
+  <img src="{{ video_preview_url }}" alt="Превью видео">
+{% else %}
+  <span>Превью видео недоступно</span>
+{% endif %}
 ```
 
 ### 2. Вывод iframe
@@ -88,11 +91,12 @@
 
 ### 3. Локальные видео (.mp4)
 
-Если ссылка ведёт напрямую на mp4 файл (например, на `static.insales-cdn.com`), эти фильтры **не** вернут плеер или превью. 
+Если ссылка ведёт напрямую на mp4 файл, эти фильтры **не** вернут плеер или превью.
 Для прямых ссылок на видео необходимо проверять строку и вручную использовать тег `<video>`:
 
 ```liquid
-{% if link.url contains "https://static.insales-cdn.com" %}
+{% assign video_url_downcase = link.url | downcase %}
+{% if video_url_downcase contains '.mp4' %}
   <video autoplay muted loop playsinline width="100%">
     <source src="{{ link.url }}" type="video/mp4">
   </video>
