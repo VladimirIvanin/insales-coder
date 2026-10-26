@@ -126,17 +126,9 @@ $(function () {
     updateBranches();
     updateMenu();
 
-    const observer = new MutationObserver(function () {
-      if (!root.isConnected || !root.contains(header) || !header.contains(dialog) ||
-          !dialog.contains(panel) || !header.contains(opener) || !panel.contains(closer) ||
-          (menu && !header.contains(menu))) cleanup();
-    });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
-
     function cleanup() {
       if (!active) return;
       active = false;
-      observer.disconnect();
       close(false);
       if (menuObserver) menuObserver.disconnect();
       removers.forEach(function (remove) {

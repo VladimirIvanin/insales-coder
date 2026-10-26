@@ -74,10 +74,6 @@ $widget.each(function (_, root) {
   form.addEventListener('click', guardPurchase, true)
   form.addEventListener('submit', guardPurchase, true)
 
-  const observer = new MutationObserver(function () {
-    if (!root.isConnected || !root.contains(form) || (summary && !form.contains(summary))) cleanup()
-  })
-
   function cleanup() {
     if (disposed) return
     disposed = true
@@ -87,13 +83,11 @@ $widget.each(function (_, root) {
     form.removeEventListener('click', guardPurchase, true)
     form.removeEventListener('submit', guardPurchase, true)
     EventBus.unsubscribe('update_variant:insales:product', acceptVariant)
-    observer.disconnect()
     if (root.__productDetailCleanup === cleanup) delete root.__productDetailCleanup
   }
 
   root.__productDetailCleanup = cleanup
   paintPurchase()
-  observer.observe(document.documentElement, { childList: true, subtree: true })
   EventBus.subscribe('update_variant:insales:product', acceptVariant)
 
   Products.getInstance($(form)).done(function (instance) {

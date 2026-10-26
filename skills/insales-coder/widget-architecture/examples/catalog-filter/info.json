@@ -1,0 +1,26 @@
+{
+  "type": "SimpleWidgetType",
+  "handle": "recipe_catalog_filter",
+  "generation": 4,
+  "name": {
+    "ru": "Фильтр категории",
+    "en": "Category filter"
+  },
+  "description": {
+    "ru": "AJAX-фильтр с диапазонами и мобильной панелью",
+    "en": "AJAX filter with ranges and mobile panel"
+  },
+  "page_kinds": [
+    "collection"
+  ],
+  "widget_list_kinds": [
+    "sidebar"
+  ],
+  "widget_category_handle": "filters",
+  "libraries": [
+    "jquery",
+    "commonjs_v2",
+    "nouislider",
+    "body-scroll-lock"
+  ]
+}

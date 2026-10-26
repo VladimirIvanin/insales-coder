@@ -1,0 +1,39 @@
+{
+  "content": [
+    {
+      "items": [
+        {
+          "name": "page_heading",
+          "label": "{{ messages.page_heading }}",
+          "type": "text",
+          "general": true
+        },
+        {
+          "name": "only_differences_label",
+          "label": "{{ messages.only_differences_label }}",
+          "type": "text",
+          "general": true
+        },
+        {
+          "name": "clear_label",
+          "label": "{{ messages.clear_label }}",
+          "type": "text",
+          "general": true
+        },
+        {
+          "name": "delete_label",
+          "label": "{{ messages.delete_label }}",
+          "type": "text",
+          "general": true
+        },
+        {
+          "name": "empty_text",
+          "label": "{{ messages.empty_text }}",
+          "type": "text",
+          "general": true
+        }
+      ]
+    }
+  ],
+  "design": []
+}

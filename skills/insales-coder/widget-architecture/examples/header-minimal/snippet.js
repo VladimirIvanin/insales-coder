@@ -54,13 +54,7 @@ $(function () {
         if (item.matches('[data-navigation-item]')) item.classList.add('is-current');
       }
     });
-    const observer = new MutationObserver(function () {
-      if (!root.isConnected || !root.contains(header) || !header.contains(dialog) ||
-          !dialog.contains(panel) || !header.contains(opener) || !panel.contains(closer)) cleanup();
-    });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
     function cleanup() {
-      observer.disconnect();
       close(false);
       removers.forEach(function (remove) { remove(); });
       if (root.__headerCleanup === cleanup) delete root.__headerCleanup;

@@ -58,14 +58,10 @@ $(function () {
     syncVisibleSlides()
 
     let active = true
-    const observer = new MutationObserver(function () {
-      if (!root.isConnected || !root.contains(sliderRoot)) destroy()
-    })
 
     function destroy() {
       if (!active) return
       active = false
-      observer.disconnect()
       visibilityEvents.forEach(function (eventName) {
         slider.off(eventName, syncVisibleSlides)
       })
@@ -75,8 +71,6 @@ $(function () {
       })
       delete root[cleanupKey]
     }
-
-    observer.observe(document.body, { childList: true, subtree: true })
     root[cleanupKey] = destroy
   })
 })

@@ -303,18 +303,9 @@
 
 ## Подписка на события форм
 
-```js
-EventBus.subscribe('send-feedback:insales:ui_feedback', function(data) {
-  // data.form — jQuery-объект формы
-})
+`send-feedback:insales:ui_feedback` передаёт `{form}`; form — jQuery-объект. Проверяй принадлежность своему экземпляру до изменения DOM. У `error-feedback:insales:ui_feedback` может быть только AJAX-ошибка, без form. Состояние отправителя и release по after-событию описаны в [профиле формы](../widget-architecture/feedback-form.md). Не переноси формат success на failure.
 
-EventBus.subscribe('error-feedback:insales:ui_feedback', function(data) {
-  $.each(data.errors, function(i, val) {
-    const errorText = typeof val == 'string' ? val : val[0]
-    microAlert(errorText, 5000, { modificator: 'warning-notice' })
-  })
-})
-```
+Успешный ответ добавляет `is-show` блоку `data-feedback-form-success`; класс `is-sended` на форме является собственной логикой виджета, а не гарантией компонента. Пустой success без подходящего CSS не подтверждает видимое сообщение.
 
 ## Кнопка открытия формы в модалке
 

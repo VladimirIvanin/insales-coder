@@ -1,0 +1,24 @@
+{
+  "type": "SimpleWidgetType",
+  "handle": "recipe_compare_page",
+  "name": {
+    "ru": "Сравнение товаров",
+    "en": "Product comparison"
+  },
+  "description": {
+    "ru": "Таблица сравнения с удалением товаров и фильтром различий",
+    "en": "Comparison table with product removal and a differences filter"
+  },
+  "page_kinds": [
+    "compare"
+  ],
+  "widget_list_kinds": [
+    "content"
+  ],
+  "generation": 4,
+  "widget_category_handle": "compare",
+  "libraries": [
+    "jquery",
+    "commonjs_v2"
+  ]
+}

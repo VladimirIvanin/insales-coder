@@ -1,0 +1,22 @@
+{
+  "ru": {
+    "image_alt": "Изображение товара",
+    "from": "от",
+    "table_name": "Сравнение товаров",
+    "page_heading": "Заголовок страницы",
+    "only_differences_label": "Подпись переключателя различий",
+    "clear_label": "Подпись очистки сравнения",
+    "delete_label": "Подпись удаления товара",
+    "empty_text": "Текст пустого состояния"
+  },
+  "en": {
+    "image_alt": "Product image",
+    "from": "from",
+    "table_name": "Product comparison",
+    "page_heading": "Page heading",
+    "only_differences_label": "Differences toggle label",
+    "clear_label": "Clear comparison label",
+    "delete_label": "Remove product label",
+    "empty_text": "Empty state text"
+  }
+}

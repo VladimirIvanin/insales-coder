@@ -1,0 +1,68 @@
+<section class="compare-widget" data-compare-widget style="--compare-product-count: {{ products.size }};">
+  <div class="compare-toolbar">
+    {% if widget_settings.page_heading and widget_settings.page_heading != '' %}
+      <h1 class="compare-heading">{{ widget_settings.page_heading | editable }}</h1>
+    {% endif %}
+
+    <div class="compare-actions" {% unless products.size > 0 %}hidden{% endunless %}>
+      <label class="compare-toggle">
+        <input type="checkbox" data-compare-differences>
+        <span>{{ widget_settings.only_differences_label | editable }}</span>
+      </label>
+      <button class="compare-clear" type="button" data-compare-clear>
+        {{ widget_settings.clear_label | editable }}
+      </button>
+    </div>
+  </div>
+
+  <div class="compare-scroll" data-compare-content {% unless products.size > 0 %}hidden{% endunless %}>
+    <div class="compare-table" data-compare-table role="table" aria-label="{{ widget_settings.page_heading | default: widget_messages.table_name | escape }}">
+      <div class="compare-row compare-products-row" role="row">
+        <div class="compare-property-label compare-corner" role="columnheader"></div>
+        {% for product in products %}
+          {% assign image_alt = product.title | escape %}
+          <div class="compare-product" data-compare-product-id="{{ product.id }}" role="columnheader">
+            <a class="compare-image" href="{{ product.url }}">
+              {{ product.first_image | webp_picture_tag: 600, alt: image_alt, title: image_alt }}
+            </a>
+            <a class="compare-product-title" href="{{ product.url }}">{{ product.title | escape }}</a>
+            <div class="compare-price">
+              {% if product.price_varies? %}{{ widget_messages.from }} {% endif %}{{ product.price_min | money }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% for property in properties %}
+        <div class="compare-row compare-property-row" data-compare-property-row role="row">
+          <div class="compare-property-label" role="rowheader">{{ property.title | escape }}</div>
+          {% for product in products %}
+            {% capture cell_values %}[{% for characteristic in product.properties[property.handle].characteristics %}{{ characteristic.title | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]{% endcapture %}
+            <div class="compare-property-value" data-compare-product-id="{{ product.id }}" data-compare-values="{{ cell_values | escape }}" role="cell">
+              {% for characteristic in product.properties[property.handle].characteristics %}
+                {{ characteristic.title | escape }}{% unless forloop.last %}, {% endunless %}
+              {% else %}
+                <span class="compare-empty-value">—</span>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      <div class="compare-row compare-remove-row" role="row">
+        <div class="compare-property-label" role="rowheader"></div>
+        {% for product in products %}
+          <div class="compare-remove-cell" data-compare-product-id="{{ product.id }}" role="cell">
+            <button class="compare-remove" type="button" data-compare-delete="{{ product.id }}">
+              {{ widget_settings.delete_label | editable }}
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <p class="compare-empty" data-compare-empty {% if products.size > 0 %}hidden{% endif %}>
+    {{ widget_settings.empty_text | editable }}
+  </p>
+</section>

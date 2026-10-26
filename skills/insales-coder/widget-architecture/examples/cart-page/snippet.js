@@ -58,15 +58,9 @@ $(function () {
       Cart.setCoupon({ coupon: ' ', form: $(form), button: $(button) });
     }
     form.addEventListener('click', removeCoupon);
-
-    const observer = new MutationObserver(function () {
-      if (!root.isConnected || !root.contains(cart) || !cart.contains(form)) cleanup();
-    });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
     function cleanup() {
       if (!active) return;
       active = false;
-      observer.disconnect();
       form.removeEventListener('click', removeCoupon);
       EventBus.unsubscribe('update_items:insales:cart', onCart);
       if (root.__cartPageCleanup === cleanup) delete root.__cartPageCleanup;

@@ -81,20 +81,15 @@ $(function () {
     function destroy() {
       if (!active) return
       active = false
-      observer.disconnect()
       slider.destroy()
       delete root[cleanupKey]
     }
-    const observer = new MutationObserver(function () {
-      if (!root.isConnected || !root.contains(sliderRoot)) destroy()
-    })
-    observer.observe(document.body, { childList: true, subtree: true })
     root[cleanupKey] = destroy
   })
 })
 ```
 
-Хранения функции на `root[cleanupKey]` **недостаточно для удаления**: её должен вызвать владелец или observer, как здесь. Для новой разметки снова нужен запуск initializer. Если владелец предоставляет teardown, используй его вместо observer; не убирай observer без подключения этого teardown. Проверь два запуска, затем удаление одного из двух экземпляров: старый слайдер уничтожен, соседний работает. Полный контракт, включая собственные EventBus-подписки редактора, — в [runtime.md](../widget-architecture/runtime.md); при использовании EventBus добавь `commonjs_v2` и сними свою подписку в destroy.
+Сохранённый `root[cleanupKey]` вызывает владелец **перед удалением или заменой** компонента. Простое удаление DOM не уничтожает слайдер автоматически. Для новой разметки снова нужен запуск initializer. Проверь два запуска, затем явный destroy и удаление одного из двух экземпляров: старый слайдер уничтожен, соседний работает. Контракт очистки — в [runtime.md](../widget-architecture/runtime.md); при использовании EventBus добавь `commonjs_v2` и сними свою подписку в destroy.
 
 Исходный API: подключаемые ядро и модули из каталога магазина, [документация Tvist](https://github.com/VladimirIvanin/tvist). Без доступной сборки укажи, что совместимость с целевым runtime ещё не проверена.
 

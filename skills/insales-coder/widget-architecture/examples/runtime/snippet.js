@@ -20,14 +20,8 @@ $(function () {
       if (!active) return;
       active = false;
       EventBus.unsubscribe(event, onVariant);
-      observer.disconnect();
       delete root[cleanupKey];
     }
-
-    const observer = new MutationObserver(function () {
-      if (!root.isConnected || !root.contains(form) || !form.contains(preview)) destroy();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
     root[cleanupKey] = destroy;
     EventBus.subscribe(event, onVariant);
   });

@@ -1,0 +1,93 @@
+<div class="catalog-filter-widget" data-catalog-filter-widget>
+  <button class="catalog-filter__open" type="button" data-catalog-filter-open aria-expanded="false">
+    <span aria-hidden="true">☷</span> {{ widget_messages.open | escape }}
+  </button>
+
+  <dialog class="catalog-filter__panel" data-catalog-filter-panel aria-label="{{ widget_messages.title | escape }}">
+  <form
+    class="catalog-filter"
+    action="{{ collection.url | escape }}"
+    method="get"
+    data-ajax-filter='{"useImages":"{{ widget_settings.use-images }}","visibleItemsSize":"{{ widget_settings.visible-items }}"}'
+  >
+    <div class="catalog-filter__head">
+      {% if widget_settings.show-title %}<h2 class="catalog-filter__title">{{ widget_settings.title | default: widget_messages.title | escape }}</h2>{% endif %}
+      <button class="catalog-filter__close" type="button" data-catalog-filter-close aria-label="{{ widget_messages.close | escape }}">×</button>
+    </div>
+
+    <div class="catalog-filter__body">
+      <label class="catalog-filter__stock"{% unless widget_settings.show-only-available %} hidden{% endunless %}>
+        <input type="checkbox" name="only_available" value="true" {% if only_available == true %}checked{% endif %}>
+        <span>{{ widget_messages.only_available | escape }}</span>
+      </label>
+      <div class="catalog-filter__items" data-ajax-filter-items></div>
+    </div>
+
+    <div class="catalog-filter__actions">
+      <button class="catalog-filter__apply" type="submit" data-catalog-filter-apply>{{ widget_messages.apply | escape }}</button>
+      <button class="catalog-filter__reset" type="button" data-ajax-filter-reset data-catalog-filter-reset>{{ widget_messages.reset | escape }}</button>
+    </div>
+
+    {% if order != blank %}<input type="hidden" name="order" value="{{ order | escape }}">{% endif %}
+    {% if page_size != blank %}<input type="hidden" name="page_size" value="{{ page_size | escape }}">{% endif %}
+    {% if language.not_default? %}<input type="hidden" name="lang" value="{{ language.locale | escape }}">{% endif %}
+    {% if search.query != blank %}<input type="hidden" name="q" value="{{ search.query | escape }}">{% endif %}
+
+    <template data-ajax-filter-template-item>
+      <section class="catalog-filter__group" data-ajax-filter-item>
+        <button class="catalog-filter__group-title" type="button" data-catalog-filter-group-toggle aria-expanded="true">
+          <span data-ajax-filter-item-title></span><span aria-hidden="true">⌄</span>
+        </button>
+        <div class="catalog-filter__group-content" data-ajax-filter-item-content></div>
+      </section>
+    </template>
+
+    <template data-ajax-filter-template-usual>
+      <label class="catalog-filter__option" data-ajax-filter-item-content-list-item>
+        <input type="checkbox" autocomplete="off" value="" name="">
+        <span data-ajax-filter-option-label></span>
+        <span class="catalog-filter__count" data-ajax-filter-option-products-count></span>
+      </label>
+    </template>
+
+    <template data-ajax-filter-template-color>
+      <label class="catalog-filter__option catalog-filter__option--image" data-ajax-filter-item-content-list-item>
+        <input type="checkbox" autocomplete="off" value="" name="options[][]">
+        <span data-ajax-filter-option-image></span>
+      </label>
+    </template>
+
+    <template data-ajax-filter-template-price>
+      <section class="catalog-filter__group catalog-filter__group--range" data-ajax-filter-item>
+        <h3 class="catalog-filter__group-title"><span>{{ widget_messages.price | escape }}</span></h3>
+        <div class="catalog-filter__range" data-ajax-filter-range>
+          <div class="catalog-filter__range-fields">
+            <label>{{ widget_messages.from | escape }} <input data-ajax-filter-range-field-min type="text" inputmode="decimal" name="price_min" value="{{ price_min }}"{% unless price_min != blank %} disabled{% endunless %}></label>
+            <label>{{ widget_messages.to | escape }} <input data-ajax-filter-range-field-max type="text" inputmode="decimal" name="price_max" value="{{ price_max }}"{% unless price_max != blank %} disabled{% endunless %}></label>
+          </div>
+          <div class="catalog-filter__slider" data-catalog-filter-slider></div>
+        </div>
+      </section>
+    </template>
+
+    <template data-ajax-filter-template-numeric>
+      <div class="catalog-filter__range" data-ajax-filter-range>
+        <div class="catalog-filter__range-fields">
+          <label>{{ widget_messages.from | escape }} <input data-ajax-filter-range-field-min type="text" inputmode="decimal" name=""></label>
+          <label>{{ widget_messages.to | escape }} <input data-ajax-filter-range-field-max type="text" inputmode="decimal" name=""></label>
+        </div>
+        <div class="catalog-filter__slider" data-catalog-filter-slider></div>
+      </div>
+    </template>
+
+    <template data-ajax-filter-template-view-all-btns>
+      <button type="button" data-ajax-filter-view-all-btn>{{ widget_messages.show_all | escape }}</button>
+      <button type="button" data-ajax-filter-hide-all-btn>{{ widget_messages.hide_all | escape }}</button>
+    </template>
+
+    <template data-ajax-filter-items-template-preloader>
+      <div class="catalog-filter__preloader" data-ajax-filter-items-preloader aria-hidden="true"></div>
+    </template>
+  </form>
+  </dialog>
+</div>

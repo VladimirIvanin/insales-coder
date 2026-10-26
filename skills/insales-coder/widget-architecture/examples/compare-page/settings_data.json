@@ -1,0 +1,22 @@
+{
+  "page_heading": {
+    "ru": "Сравнение товаров",
+    "en": "Compare products"
+  },
+  "only_differences_label": {
+    "ru": "Только различия",
+    "en": "Differences only"
+  },
+  "clear_label": {
+    "ru": "Очистить сравнение",
+    "en": "Clear comparison"
+  },
+  "delete_label": {
+    "ru": "Удалить",
+    "en": "Remove"
+  },
+  "empty_text": {
+    "ru": "В сравнении пока нет товаров",
+    "en": "There are no products to compare yet"
+  }
+}
