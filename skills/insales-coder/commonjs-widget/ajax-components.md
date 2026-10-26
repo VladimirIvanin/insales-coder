@@ -599,13 +599,13 @@ EventBus.subscribe('init-product:ui-ajax-product', function(data) {
 ### Скрытые поля — обязательно передавать
 
 ```liquid
-{% if order %}<input type="hidden" name="order" value="{{ order }}">{% endif %}
-{% if page_size %}<input type="hidden" name="page_size" value="{{ page_size }}">{% endif %}
-{% if language.not_default? %}<input type="hidden" name="lang" value="{{ language.locale }}">{% endif %}
-{% if search.query != '' %}<input type="hidden" name="q" value="{{ search.query }}">{% endif %}
+{% if order %}<input type="hidden" name="order" value="{{ order | escape }}">{% endif %}
+{% if page_size %}<input type="hidden" name="page_size" value="{{ page_size | escape }}">{% endif %}
+{% if language.not_default? %}<input type="hidden" name="lang" value="{{ language.locale | escape }}">{% endif %}
+{% if search.query != '' %}<input type="hidden" name="q" value="{{ search.query | escape }}">{% endif %}
 ```
 
-### Все 5 шаблонов (все нужны)
+### Основные шаблоны фильтра
 
 ```liquid
 <!-- 1. Шаблон фильтра по цене -->
@@ -657,6 +657,10 @@ EventBus.subscribe('init-product:ui-ajax-product', function(data) {
   <div data-ajax-filter-items-preloader></div>
 </template>
 ```
+
+### Длинные группы и восстановление после AJAX
+
+Для кнопок дозагрузки нужен дополнительный `template[data-ajax-filter-template-view-all-btns]`, содержащий `button[data-ajax-filter-view-all-btn]` и `button[data-ajax-filter-hide-all-btn]`. После замены группы `filter-item-loaded:ui-ajax-filter` передаёт `{filterItem, checked, classList}`; восстанавливай выбранные значения и классы только в принадлежащем экземпляру узле. Диапазоны, сброс и lifecycle разобраны в [профиле фильтра](../widget-architecture/catalog-filter.md).
 
 ### Событие после инициализации
 

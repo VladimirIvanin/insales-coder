@@ -1,11 +1,32 @@
 {
-  "buy-label": "Добавить в корзину",
-  "quantity-label": "Количество",
-  "variants-label": "Выберите вариант",
-  "available-label": "В наличии",
-  "unavailable-label": "Нет в наличии",
-  "zero-price-label": "Цена по запросу",
-  "purchase-hidden-label": "Уточните условия заказа у магазина.",
+  "buy-label": {
+    "ru": "Добавить в корзину",
+    "en": "Add to cart"
+  },
+  "quantity-label": {
+    "ru": "Количество",
+    "en": "Quantity"
+  },
+  "variants-label": {
+    "ru": "Выберите вариант",
+    "en": "Choose a variant"
+  },
+  "available-label": {
+    "ru": "В наличии",
+    "en": "In stock"
+  },
+  "unavailable-label": {
+    "ru": "Нет в наличии",
+    "en": "Out of stock"
+  },
+  "zero-price-label": {
+    "ru": "Цена по запросу",
+    "en": "Price on request"
+  },
+  "purchase-hidden-label": {
+    "ru": "Уточните условия заказа у магазина.",
+    "en": "Contact the store for order conditions."
+  },
   "product-bg": "#ffffff",
   "product-color": "#20252b",
   "product-accent": "#2059d9"

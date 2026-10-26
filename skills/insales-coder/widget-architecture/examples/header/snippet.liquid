@@ -1,11 +1,11 @@
 {% assign menu = linklists[widget_settings.menu-handle] %}
+{% assign logo_alt = widget_settings.logo-alt | default: account.title %}
 <header class="recipe-header">
   <div class="layout__content recipe-header__content">
     <div class="recipe-header__row">
-      <a class="recipe-header__logo" href="{% if language.not_default? %}/?lang={{ language.locale }}{% else %}/{% endif %}">
+      <a class="recipe-header__logo" aria-label="{{ logo_alt | escape }}" href="{% if language.not_default? %}/?lang={{ language.locale }}{% else %}/{% endif %}">
         {% if widget_settings.logo %}
           {% assign logo_url = widget_settings.logo | downcase %}
-          {% assign logo_alt = widget_settings.logo-alt | default: account.title %}
           {% if logo_url contains '.svg' %}
             <img src="{{ widget_settings.logo | escape }}" alt="{{ logo_alt | escape }}">
           {% else %}
@@ -15,9 +15,9 @@
           {% default_logo %}
         {% endif %}
       </a>
-      <button class="recipe-header__open" type="button" aria-expanded="false" aria-haspopup="dialog">
+      <button class="recipe-header__open" type="button" aria-expanded="false" aria-haspopup="dialog" aria-label="{{ widget_messages.catalog | escape }}">
         <span aria-hidden="true">☰</span>
-        {{ widget_messages.catalog | escape }}
+        <span class="recipe-header__open-label">{{ widget_messages.catalog | escape }}</span>
       </button>
       <form class="recipe-header__search" action="/search" method="get" role="search">
         <input type="hidden" name="lang" value="{{ language.locale }}">

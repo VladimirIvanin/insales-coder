@@ -251,7 +251,7 @@ Two{% endcapture %}
 
 ```liquid
 <script>
-  var data = {
+  const data = {
     text: {{ "<p>html</p>" | json }},
     product: {{ product | json }}
   };
@@ -262,7 +262,7 @@ Two{% endcapture %}
 
 ```liquid
 <script>
-  var article = {{ article | custom_json: "title", "id", "author" }};
+  const article = {{ article | custom_json: "title", "id", "author" }};
 </script>
 ```
 

@@ -1,0 +1,30 @@
+{
+  "ru": {
+    "title": "Заголовок",
+    "subtitle": "Подзаголовок",
+    "parent_collection": "Родительская категория",
+    "hide_images": "Скрыть изображения",
+    "section_bg": "Фон секции",
+    "card_bg": "Фон карточки",
+    "text_color": "Цвет текста",
+    "card_gap": "Отступ между карточками",
+    "empty": "В этой категории пока нет разделов",
+    "product_one": "товар",
+    "product_few": "товара",
+    "product_many": "товаров"
+  },
+  "en": {
+    "title": "Heading",
+    "subtitle": "Subtitle",
+    "parent_collection": "Parent category",
+    "hide_images": "Hide images",
+    "section_bg": "Section background",
+    "card_bg": "Card background",
+    "text_color": "Text color",
+    "card_gap": "Card gap",
+    "empty": "This category has no sections yet",
+    "product_one": "product",
+    "product_few": "products",
+    "product_many": "products"
+  }
+}

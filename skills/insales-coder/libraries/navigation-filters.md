@@ -36,7 +36,7 @@ $(function () {
 
 Подключает JS и CSS 14.6.3, даёт глобальный `noUiSlider`. `noUiSlider.create(element, options)` добавляет API в `element.noUiSlider`; события `slide` и `set` различаются: `slide` обновляет видимые поля во время движения, `set` срабатывает после установки значения. В системных фильтрах поля цены сохраняют платформенные имена `price_min` и `price_max`; AJAX-фильтр и шаблоны формы описаны в [common.js](../commonjs-widget/ajax-components.md).
 
-Короткий пример формы цены с демонстрационными границами 0–10000. В рабочем фильтре получай границы от его данных после инициализации, чтобы не отсечь товары магазина.
+Короткий пример формы целочисленной цены с демонстрационными границами 0–10000. В рабочем фильтре получай границы от его данных после инициализации, чтобы не отсечь товары магазина.
 
 ```json
 { "libraries": ["jquery", "nouislider"] }
@@ -63,8 +63,14 @@ $(function () {
     const max = Number(slider.dataset.max)
     if (!(max > min)) return
 
+    function initialValue(input, fallback) {
+      const raw = input.value.trim()
+      const value = Number(raw)
+      return raw !== '' && Number.isFinite(value) ? value : fallback
+    }
+
     noUiSlider.create(slider, {
-      start: [Number(minInput.value) || min, Number(maxInput.value) || max],
+      start: [initialValue(minInput, min), initialValue(maxInput, max)],
       range: { min, max },
       connect: true
     })
@@ -84,5 +90,7 @@ $(function () {
   })
 })
 ```
+
+Для полного AJAX-фильтра со сбросом и заменой групп используй [профиль фильтра](../widget-architecture/catalog-filter.md); короткий пример выше показывает только синхронизацию полей.
 
 Если диапазон фильтра перестроен AJAX-компонентом, уничтожь старый `element.noUiSlider` перед новой инициализацией. Источник API: [официальная документация и события](https://refreshless.com/nouislider/events-callbacks/); подключаемую версию проверяй в каталоге магазина.

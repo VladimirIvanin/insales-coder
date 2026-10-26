@@ -1,0 +1,61 @@
+{
+  "content": [
+    {
+      "items": [
+        {
+          "name": "title",
+          "type": "text",
+          "label": "{{ messages.title }}"
+        },
+        {
+          "name": "subtitle",
+          "type": "text",
+          "label": "{{ messages.subtitle }}"
+        },
+        {
+          "name": "parent-collection",
+          "type": "collection",
+          "label": "{{ messages.parent_collection }}"
+        },
+        {
+          "name": "hide-images",
+          "type": "checkbox",
+          "label": "{{ messages.hide_images }}"
+        }
+      ]
+    }
+  ],
+  "design": [
+    {
+      "items": [
+        {
+          "name": "section-bg",
+          "type": "color",
+          "label": "{{ messages.section_bg }}",
+          "clearable": true
+        },
+        {
+          "name": "card-bg",
+          "type": "color",
+          "label": "{{ messages.card_bg }}",
+          "clearable": true
+        },
+        {
+          "name": "text-color",
+          "type": "color",
+          "label": "{{ messages.text_color }}",
+          "clearable": true
+        },
+        {
+          "name": "card-gap",
+          "type": "number",
+          "label": "{{ messages.card_gap }}",
+          "min": 0,
+          "max": 48,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
+    }
+  ]
+}

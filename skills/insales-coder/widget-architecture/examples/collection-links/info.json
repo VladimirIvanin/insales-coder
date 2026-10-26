@@ -1,0 +1,17 @@
+{
+  "generation": 4,
+  "type": "SimpleWidgetType",
+  "handle": "recipe_collection_links",
+  "page_kinds": [
+    "all"
+  ],
+  "widget_list_kinds": [
+    "content"
+  ],
+  "widget_category_handle": "benefits",
+  "name": {
+    "ru": "Сетка категорий",
+    "en": "Category grid"
+  },
+  "libraries": []
+}

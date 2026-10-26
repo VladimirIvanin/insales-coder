@@ -1,0 +1,51 @@
+{% assign parent_collection = collections.root_category %}
+{% if widget_settings.parent-collection != blank %}
+  {% assign parent_collection = collections[widget_settings.parent-collection] %}
+{% endif %}
+{% capture cache_key %}{{ widget_basic_cache_key }}_{{ account.collections_basic_cache_key }}_{{ account.products_basic_cache_key }}{% endcapture %}
+{% cache cache_key %}
+<section class="collection-links">
+  {% if widget_settings.title != blank %}
+    <h2 class="collection-links__title">{{ widget_settings.title | escape }}</h2>
+  {% endif %}
+  {% if widget_settings.subtitle != blank %}
+    <p class="collection-links__subtitle">{{ widget_settings.subtitle | escape }}</p>
+  {% endif %}
+  <ul class="collection-links__grid">
+    {% for category in parent_collection.subcollections %}
+      <li class="collection-links__item">
+        <a class="collection-links__card" href="{{ category.url | escape }}">
+          {% unless widget_settings.hide-images %}
+            {% assign photo = category.menu_image %}
+            {% if photo.large_url contains 'no_image' %}
+              {% assign photo_url = photo.large_url %}
+            {% else %}
+              {% assign photo_url = photo | image_url: 600 %}
+            {% endif %}
+            <img class="collection-links__image" src="{{ photo_url | escape }}" loading="lazy" alt="">
+          {% endunless %}
+          <span class="collection-links__name">{{ category.title | escape }}</span>
+          {% assign count = category.products_count | plus: 0 %}
+          {% assign last_digit = count | modulo: 10 %}
+          {% assign last_two = count | modulo: 100 %}
+          {% assign count_label = widget_messages.product_many %}
+          {% if language.locale == 'ru' %}
+            {% if last_two < 11 or last_two > 14 %}
+              {% if last_digit == 1 %}
+                {% assign count_label = widget_messages.product_one %}
+              {% elsif last_digit >= 2 and last_digit <= 4 %}
+                {% assign count_label = widget_messages.product_few %}
+              {% endif %}
+            {% endif %}
+          {% elsif count == 1 %}
+            {% assign count_label = widget_messages.product_one %}
+          {% endif %}
+          <span class="collection-links__count">{{ count }} {{ count_label | escape }}</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="collection-links__empty">{{ widget_messages.empty | escape }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endcache %}

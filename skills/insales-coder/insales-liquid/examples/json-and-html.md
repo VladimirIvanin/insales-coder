@@ -20,7 +20,7 @@
 
 ```liquid
 <script>
-  var article = {{ article | custom_json: 'title', 'id', 'url' }};
+  const article = {{ article | custom_json: 'title', 'id', 'url' }};
 </script>
 ```
 

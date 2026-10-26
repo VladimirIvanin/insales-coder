@@ -1,6 +1,6 @@
 # Страница корзины
 
-[Полный пакет](examples/cart-page/info.json): [Liquid](examples/cart-page/snippet.liquid), [JS](examples/cart-page/snippet.js), [SCSS](examples/cart-page/snippet.scss), [форма](examples/cart-page/settings_form.json), [defaults](examples/cart-page/settings_data.json), [сообщения](examples/cart-page/messages.json). Копируй папку, выбирай собственный handle и оформление. Нужны `jquery`, `commonjs_v2`, `my-layout`; `.layout__content` использует последний. MCP не требуется для подготовки пакета.
+[Полный пакет](examples/cart-page/info.json): [snippet.liquid](examples/cart-page/snippet.liquid), [snippet.js](examples/cart-page/snippet.js), [snippet.scss](examples/cart-page/snippet.scss), [форма](examples/cart-page/settings_form.json), [defaults](examples/cart-page/settings_data.json), [сообщения](examples/cart-page/messages.json). Копируй папку, выбирай собственный handle и оформление. Нужны `jquery`, `commonjs_v2`, `my-layout`; `.layout__content` использует последний. MCP не требуется для подготовки пакета.
 
 ## Назначение
 

@@ -1,0 +1,16 @@
+{
+  "title": {
+    "ru": "Категории",
+    "en": "Categories"
+  },
+  "subtitle": {
+    "ru": "",
+    "en": ""
+  },
+  "parent-collection": null,
+  "hide-images": false,
+  "section-bg": "#f6f7f8",
+  "card-bg": "#ffffff",
+  "text-color": "#20252b",
+  "card-gap": 16
+}
