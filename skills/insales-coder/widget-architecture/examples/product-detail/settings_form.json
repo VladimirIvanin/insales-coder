@@ -1,0 +1,64 @@
+{
+  "content": [
+    {
+      "items": [
+        {
+          "name": "buy-label",
+          "label": "{{ messages.buy }}",
+          "type": "text"
+        },
+        {
+          "name": "quantity-label",
+          "label": "{{ messages.quantity }}",
+          "type": "text"
+        },
+        {
+          "name": "variants-label",
+          "label": "{{ messages.variants }}",
+          "type": "text"
+        },
+        {
+          "name": "available-label",
+          "label": "{{ messages.available }}",
+          "type": "text"
+        },
+        {
+          "name": "unavailable-label",
+          "label": "{{ messages.unavailable }}",
+          "type": "text"
+        },
+        {
+          "name": "zero-price-label",
+          "label": "{{ messages.zero_price }}",
+          "type": "text"
+        },
+        {
+          "name": "purchase-hidden-label",
+          "label": "{{ messages.purchase_hidden }}",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "design": [
+    {
+      "items": [
+        {
+          "name": "product-bg",
+          "label": "{{ messages.background }}",
+          "type": "color"
+        },
+        {
+          "name": "product-color",
+          "label": "{{ messages.text_color }}",
+          "type": "color"
+        },
+        {
+          "name": "product-accent",
+          "label": "{{ messages.accent }}",
+          "type": "color"
+        }
+      ]
+    }
+  ]
+}

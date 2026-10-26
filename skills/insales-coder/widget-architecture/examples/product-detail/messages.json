@@ -1,0 +1,42 @@
+{
+  "ru": {
+    "buy": "Текст кнопки покупки",
+    "quantity": "Подпись количества",
+    "variants": "Подпись выбора варианта",
+    "available": "Текст наличия",
+    "unavailable": "Текст отсутствия",
+    "zero_price": "Текст нулевой цены",
+    "purchase_hidden": "Текст при недоступной покупке",
+    "background": "Фон",
+    "text_color": "Цвет текста",
+    "accent": "Акцент",
+    "gallery": "Фотографии товара",
+    "photo": "Фото",
+    "no_photo": "Фото пока нет",
+    "decrease": "Уменьшить количество",
+    "increase": "Увеличить количество",
+    "updating": "Обновляем вариант…",
+    "load_error": "Не удалось подготовить покупку. Обновите страницу.",
+    "description": "Описание"
+  },
+  "en": {
+    "buy": "Buy button text",
+    "quantity": "Quantity label",
+    "variants": "Variant selection label",
+    "available": "In-stock text",
+    "unavailable": "Out-of-stock text",
+    "zero_price": "Zero-price text",
+    "purchase_hidden": "Text when purchase is unavailable",
+    "background": "Background",
+    "text_color": "Text color",
+    "accent": "Accent",
+    "gallery": "Product photos",
+    "photo": "Photo",
+    "no_photo": "No photo yet",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "updating": "Updating variant…",
+    "load_error": "Unable to prepare purchase. Reload the page.",
+    "description": "Description"
+  }
+}

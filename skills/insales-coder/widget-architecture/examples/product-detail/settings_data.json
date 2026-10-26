@@ -1,0 +1,12 @@
+{
+  "buy-label": "Добавить в корзину",
+  "quantity-label": "Количество",
+  "variants-label": "Выберите вариант",
+  "available-label": "В наличии",
+  "unavailable-label": "Нет в наличии",
+  "zero-price-label": "Цена по запросу",
+  "purchase-hidden-label": "Уточните условия заказа у магазина.",
+  "product-bg": "#ffffff",
+  "product-color": "#20252b",
+  "product-accent": "#2059d9"
+}

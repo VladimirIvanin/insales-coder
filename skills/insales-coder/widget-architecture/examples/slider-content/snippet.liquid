@@ -1,0 +1,41 @@
+{% if data.blocks.size > 0 %}
+  <section class="content-slider" aria-label="{{ widget_settings.title | default: widget_messages.region | escape }}">
+    <div class="content-slider__inner">
+      <div class="content-slider__heading">
+        {% if widget_settings.title != blank %}
+          <h2 class="content-slider__title">{{ widget_settings.title | escape }}</h2>
+        {% endif %}
+        <div class="content-slider__arrows">
+          <button class="content-slider__arrow js-content-prev" type="button" aria-label="{{ widget_messages.previous | escape }}">
+            <span aria-hidden="true">←</span>
+          </button>
+          <button class="content-slider__arrow js-content-next" type="button" aria-label="{{ widget_messages.next | escape }}">
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+      <div class="tvist-v1 content-slider__slider js-content-slider" data-slide-gap="{{ widget_settings.slide-gap | default: 24 }}">
+        <div class="tvist-v1__track">
+          <div class="tvist-v1__container">
+            {% for block in data.blocks %}
+              <article class="tvist-v1__slide content-slider__card">
+                {% if block.hide_image != true and block.image %}
+                  {% assign image_source = block.image | downcase %}
+                  <div class="content-slider__image">
+                    {% if image_source contains '.svg' %}
+                      <img src="{{ block.image | escape }}" loading="lazy" alt="">
+                    {% else %}
+                      <img src="{{ block.image | image_url: 960 | escape }}" loading="lazy" alt="">
+                    {% endif %}
+                  </div>
+                {% endif %}
+                <div class="content-slider__body">{{ block.content }}</div>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <nav class="content-slider__pagination js-content-pagination" data-page-label="{{ widget_messages.page | escape }}" aria-label="{{ widget_messages.pagination | escape }}"></nav>
+    </div>
+  </section>
+{% endif %}

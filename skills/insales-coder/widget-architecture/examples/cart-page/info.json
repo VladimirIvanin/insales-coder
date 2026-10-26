@@ -1,0 +1,21 @@
+{
+  "generation": 4,
+  "type": "SimpleWidgetType",
+  "handle": "recipe_cart_page",
+  "page_kinds": [
+    "cart"
+  ],
+  "widget_list_kinds": [
+    "content"
+  ],
+  "widget_category_handle": "cart",
+  "name": {
+    "ru": "Страница корзины",
+    "en": "Cart page"
+  },
+  "libraries": [
+    "jquery",
+    "commonjs_v2",
+    "my-layout"
+  ]
+}

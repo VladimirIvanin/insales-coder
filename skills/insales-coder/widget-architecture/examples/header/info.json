@@ -1,0 +1,22 @@
+{
+  "generation": 4,
+  "type": "SimpleWidgetType",
+  "handle": "recipe_catalog_header",
+  "page_kinds": [
+    "all"
+  ],
+  "widget_list_kinds": [
+    "header"
+  ],
+  "widget_category_handle": "headers",
+  "name": {
+    "ru": "Шапка с каталогом",
+    "en": "Header with catalog"
+  },
+  "libraries": [
+    "jquery",
+    "commonjs_v2",
+    "my-layout",
+    "body-scroll-lock"
+  ]
+}

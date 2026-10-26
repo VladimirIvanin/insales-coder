@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "content": {
+        "ru": "<h3>Доставка</h3><p>Выбирайте удобный способ получения заказа.</p><p><a href=\"/collection/all\">Перейти в каталог</a></p>",
+        "en": "<h3>Delivery</h3><p>Choose a convenient way to receive your order.</p><p><a href=\"/collection/all\">Browse catalog</a></p>"
+      },
+      "hide_image": true
+    },
+    {
+      "content": {
+        "ru": "<h3>Помощь с выбором</h3><p>Расскажем о деталях и поможем сравнить товары.</p><p><a href=\"/collection/all\">Перейти в каталог</a></p>",
+        "en": "<h3>Help choosing</h3><p>We will explain the details and help compare products.</p><p><a href=\"/collection/all\">Browse catalog</a></p>"
+      },
+      "hide_image": true
+    },
+    {
+      "content": {
+        "ru": "<h3>Удобная оплата</h3><p>Выберите подходящий способ оплаты при оформлении.</p><p><a href=\"/collection/all\">Перейти в каталог</a></p>",
+        "en": "<h3>Convenient payment</h3><p>Choose your preferred payment method at checkout.</p><p><a href=\"/collection/all\">Browse catalog</a></p>"
+      },
+      "hide_image": true
+    },
+    {
+      "content": {
+        "ru": "<h3>Новые коллекции</h3><p>Находите свежие идеи и любимые вещи в каталоге.</p><p><a href=\"/collection/all\">Перейти в каталог</a></p>",
+        "en": "<h3>New collections</h3><p>Discover fresh ideas and favorite items in the catalog.</p><p><a href=\"/collection/all\">Browse catalog</a></p>"
+      },
+      "hide_image": true
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "content": [
+    {
+      "items": [
+        {
+          "name": "title",
+          "type": "text",
+          "label": "{{ messages.title }}"
+        },
+        {
+          "name": "empty-text",
+          "type": "text",
+          "label": "{{ messages.empty }}"
+        },
+        {
+          "name": "catalog-url",
+          "type": "text",
+          "label": "{{ messages.continue }}"
+        }
+      ]
+    }
+  ],
+  "design": [
+    {
+      "items": [
+        {
+          "name": "cart-accent",
+          "type": "color",
+          "label": "{{ messages.accent }}"
+        }
+      ]
+    }
+  ]
+}

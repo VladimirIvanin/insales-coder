@@ -1,5 +1,7 @@
 # Data-атрибуты common.js для snippet.liquid
 
+Для полного виджета доступны [страница товара](../widget-architecture/product-detail.md) и [страница корзины](../widget-architecture/cart-page.md). Ниже — отдельные атрибуты этих компонентов.
+
 ## Форма товара
 
 Корень — `<form data-product-id>`. Все остальные атрибуты товара работают только внутри него.
@@ -185,8 +187,8 @@
 | Атрибут | Что выводит |
 |---|---|
 | `data-cart-positions-count` | Количество позиций |
-| `data-cart-total-price` | Сумма без скидок |
-| `data-cart-full-total-price` | Сумма со скидками |
+| `data-cart-total-price` | Итог `total_price` с учётом скидок |
+| `data-cart-full-total-price` | Сумма товаров `items_price` до скидки заказа |
 | `data-cart-item-count` | Количество товаров |
 | `data-cart-discounts-ajax` | Информация о скидках (требует `data-reload-on-coupon="false"` на форме) |
 | `data-cart-discounts-error` | Ошибки купона |

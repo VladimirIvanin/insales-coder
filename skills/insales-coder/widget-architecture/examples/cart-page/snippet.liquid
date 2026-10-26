@@ -1,0 +1,84 @@
+<section class="recipe-cart">
+  <div class="layout__content">
+    <h1>{{ widget_settings.title | escape }}</h1>
+    <div class="recipe-cart__refresh" hidden role="status">
+      <p>{{ widget_messages.refresh | escape }}</p>
+      <a href="{{ cart_url }}">{{ widget_messages.update | escape }}</a>
+    </div>
+    <div class="recipe-cart__empty"{% if cart.items.size > 0 %} hidden{% endif %}>
+      <p>{{ widget_settings.empty-text | escape }}</p>
+      <a href="{{ widget_settings.catalog-url | escape }}">{{ widget_messages.continue | escape }}</a>
+    </div>
+    <form class="recipe-cart__form" action="{{ cart_url }}" method="post"
+          data-cart-form data-reload-on-coupon="false"{% if cart.items.size == 0 %} hidden{% endif %}>
+      <input type="hidden" name="_method" value="put">
+      <input type="hidden" name="make_order" value="">
+      <div class="recipe-cart__layout">
+        <div class="recipe-cart__items">
+          {% for item in cart.items %}
+            {% assign option_ids = item.accessory_lines | map: 'accessory_value_id' | sort | join: ',' %}
+            <article class="recipe-cart__item" data-product-id="{{ item.product.id }}"
+                     data-product-updated-at="{{ item.product.updated_at }}" data-item-id="{{ item.id }}"
+                     data-line-key="{{ item.id }}:{{ option_ids }}">
+              <a class="recipe-cart__photo"{% if item.product %} href="{{ item.product.url | add_param: 'variant_id', item.id | escape }}"{% endif %}>
+                {% if item.image %}
+                  <img src="{{ item.image.original_url | image_url: 240 | escape }}" alt="{{ item.title | escape }}" loading="lazy">
+                {% else %}
+                  <span>{{ widget_messages.no_image | escape }}</span>
+                {% endif %}
+              </a>
+              <div class="recipe-cart__details">
+                <h2>{% if item.product %}<a href="{{ item.product.url | add_param: 'variant_id', item.id | escape }}">{{ item.title | escape }}</a>{% else %}{{ item.title | escape }}{% endif %}</h2>
+                {% if item.accessory_lines.size > 0 %}
+                  <ul class="recipe-cart__options" data-item-accessories>
+                    {% for option in item.accessory_lines %}
+                      <li data-item-accessory-value-id="{{ option.accessory_value_id }}">{{ option.accessory_value_name | escape }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+                <span data-cart-item-price>{{ item.sale_price | money }}</span>
+                {% if item.id == 'gift' %}
+                  <p>{{ widget_messages.gift | escape }} × {{ item.quantity }}</p>
+                {% else %}
+                  <label class="recipe-cart__quantity-label">
+                    <span>{{ widget_messages.quantity | escape }}</span>
+                    <span class="recipe-cart__quantity" data-quantity>
+                      <button type="button" data-quantity-change="-1" aria-label="{{ widget_messages.decrease | escape }}">−</button>
+                      <input type="text" inputmode="decimal" name="cart[quantity][{{ item.id }}]" value="{{ item.quantity }}">
+                      <button type="button" data-quantity-change="1" aria-label="{{ widget_messages.increase | escape }}">+</button>
+                    </span>
+                  </label>
+                {% endif %}
+              </div>
+              <div class="recipe-cart__line-total">
+                <strong data-cart-item-total-price>{{ item.total_price | money }}</strong>
+                {% unless item.id == 'gift' %}
+                  <button type="button" data-item-delete="{{ item.id }}">{{ widget_messages.remove | escape }}</button>
+                {% endunless %}
+              </div>
+            </article>
+          {% endfor %}
+          <button class="recipe-cart__update" type="button" data-cart-update>{{ widget_messages.update | escape }}</button>
+        </div>
+        <aside class="recipe-cart__summary">
+          {% if cart.enable_coupon? %}
+            <label class="recipe-cart__coupon">
+              <span>{{ widget_messages.coupon | escape }}</span>
+              <input type="text" name="cart[coupon]" value="{{ cart.coupon | escape }}">
+            </label>
+            <button type="button" data-coupon-submit>{{ widget_messages.apply | escape }}</button>
+            <button type="button" data-remove-cart-coupon>{{ widget_messages.remove_coupon | escape }}</button>
+            <div class="recipe-cart__error" data-cart-discounts-error role="alert">
+              {% if cart.invalid_coupon? %}{{ cart.coupon_error | escape }}{% endif %}
+            </div>
+          {% endif %}
+          <p>{{ widget_messages.items_total | escape }}: <span data-cart-full-total-price>{{ cart.items_price | money }}</span></p>
+          <div class="recipe-cart__discounts" data-cart-discounts-ajax></div>
+          <p class="recipe-cart__total">{{ widget_messages.total | escape }}: <strong data-cart-total-price>{{ cart.total_price | money }}</strong></p>
+          <button class="recipe-cart__checkout" type="submit" data-cart-submit>{{ widget_messages.checkout | escape }}</button>
+          <p class="recipe-cart__error js-cart-error" role="alert" hidden>{{ widget_messages.error | escape }}</p>
+        </aside>
+      </div>
+    </form>
+  </div>
+</section>

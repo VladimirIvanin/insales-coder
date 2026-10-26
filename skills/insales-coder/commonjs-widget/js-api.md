@@ -138,7 +138,8 @@ Cart.add({
   coupon: 'PROMO'
 })
 
-// Удалить позиции по ID позиции (не variant_id!)
+// Удалить обычную позицию по variant_id (Liquid item.id); не cart_line_id.
+// Строки с опциями требуют их accessory_value_ids, см. штатную форму корзины.
 Cart.delete({ items: [160549240] })
 
 // Уменьшить количество

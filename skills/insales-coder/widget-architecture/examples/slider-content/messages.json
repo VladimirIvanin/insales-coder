@@ -1,0 +1,28 @@
+{
+  "ru": {
+    "title": "Заголовок",
+    "gap": "Расстояние между карточками",
+    "background": "Фон секции",
+    "card_background": "Фон карточки",
+    "text_color": "Цвет текста",
+    "accent": "Акцент",
+    "previous": "Предыдущие карточки",
+    "next": "Следующие карточки",
+    "pagination": "Страницы слайдера",
+    "region": "Карточки магазина",
+    "page": "Страница"
+  },
+  "en": {
+    "title": "Heading",
+    "gap": "Space between cards",
+    "background": "Section background",
+    "card_background": "Card background",
+    "text_color": "Text color",
+    "accent": "Accent",
+    "previous": "Previous cards",
+    "next": "Next cards",
+    "pagination": "Slider pages",
+    "region": "Store cards",
+    "page": "Page"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "generation": 4,
+  "type": "BlockListWidgetType",
+  "handle": "recipe_content_slider",
+  "page_kinds": [
+    "all"
+  ],
+  "widget_list_kinds": [
+    "content"
+  ],
+  "widget_category_handle": "benefits",
+  "block_template_handle": "system-image-and-content",
+  "name": {
+    "ru": "Слайдер контента",
+    "en": "Content slider"
+  },
+  "libraries": [
+    "jquery",
+    "tvist-v1"
+  ]
+}

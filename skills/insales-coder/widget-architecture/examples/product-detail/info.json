@@ -1,0 +1,21 @@
+{
+  "generation": 4,
+  "type": "SimpleWidgetType",
+  "handle": "recipe_product_detail",
+  "page_kinds": [
+    "product"
+  ],
+  "widget_list_kinds": [
+    "content"
+  ],
+  "widget_category_handle": "products-cards",
+  "name": {
+    "ru": "Товар с галереей",
+    "en": "Product with gallery"
+  },
+  "libraries": [
+    "jquery",
+    "commonjs_v2",
+    "my-layout"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "content": [
+    {
+      "items": [
+        {
+          "name": "title",
+          "label": "{{ messages.title }}",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "design": [
+    {
+      "items": [
+        {
+          "name": "slide-gap",
+          "label": "{{ messages.gap }}",
+          "type": "number",
+          "min": 0,
+          "max": 64,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "name": "section-bg",
+          "label": "{{ messages.background }}",
+          "type": "color"
+        },
+        {
+          "name": "card-bg",
+          "label": "{{ messages.card_background }}",
+          "type": "color"
+        },
+        {
+          "name": "text-color",
+          "label": "{{ messages.text_color }}",
+          "type": "color"
+        },
+        {
+          "name": "accent-color",
+          "label": "{{ messages.accent }}",
+          "type": "color"
+        }
+      ]
+    }
+  ]
+}

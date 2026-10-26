@@ -1,63 +1,104 @@
-{% capture category_menu %}
-<ul class="recipe-header__tree" data-navigation>
-  {% for category in collections.root_category.subcollections %}
-    <li data-navigation-item>
-      <a href="{{ category.url }}" data-navigation-link="{{ category.url }}">{{ category.title | escape }}</a>
-      {% if category.subcollections.size > 0 %}
-        <details>
-          <summary>{{ widget_messages.subcategories | escape }}</summary>
-          <ul data-navigation-submenu>
-            {% for child in category.subcollections %}
+{% assign menu = linklists[widget_settings.menu-handle] %}
+<header class="recipe-header">
+  <div class="layout__content recipe-header__content">
+    <div class="recipe-header__row">
+      <a class="recipe-header__logo" href="{% if language.not_default? %}/?lang={{ language.locale }}{% else %}/{% endif %}">
+        {% if widget_settings.logo %}
+          {% assign logo_url = widget_settings.logo | downcase %}
+          {% assign logo_alt = widget_settings.logo-alt | default: account.title %}
+          {% if logo_url contains '.svg' %}
+            <img src="{{ widget_settings.logo | escape }}" alt="{{ logo_alt | escape }}">
+          {% else %}
+            <img src="{{ widget_settings.logo | image_url: 480 | escape }}" alt="{{ logo_alt | escape }}">
+          {% endif %}
+        {% else %}
+          {% default_logo %}
+        {% endif %}
+      </a>
+      <button class="recipe-header__open" type="button" aria-expanded="false" aria-haspopup="dialog">
+        <span aria-hidden="true">☰</span>
+        {{ widget_messages.catalog | escape }}
+      </button>
+      <form class="recipe-header__search" action="/search" method="get" role="search">
+        <input type="hidden" name="lang" value="{{ language.locale }}">
+        <input type="search" name="q" autocomplete="off" data-search-field
+               aria-label="{{ widget_messages.search | escape }}"
+               placeholder="{{ widget_messages.search | escape }}">
+        <button type="submit">{{ widget_messages.search_submit | escape }}</button>
+        <div class="recipe-header__results" data-search-result></div>
+      </form>
+      <div class="recipe-header__actions">
+        {% if settings.compare_enabled == null or settings.compare_enabled %}
+          <a href="/compares">{{ widget_messages.compare | escape }} <span class="compare-empty" data-compare-counter>0</span></a>
+        {% endif %}
+        {% if settings.favorite_enabled == true %}
+          <a href="/favorites">{{ widget_messages.favorites | escape }} <span class="favorites-empty" data-ui-favorites-counter>0</span></a>
+        {% endif %}
+        {% if account.show_cart? %}
+          <a href="{{ cart_url }}">{{ widget_messages.cart | escape }} <span class="cart-empty" data-cart-positions-count>0</span></a>
+        {% endif %}
+      </div>
+    </div>
+    {% if menu.links.size > 0 %}
+      <nav class="recipe-header__menu js-header-menu" aria-label="{{ widget_messages.menu | escape }}"
+           data-more-title="{{ widget_messages.more | escape }}">
+        {% for link in menu.links %}
+          <a href="{{ link.url | escape }}">{{ link.title | escape }}</a>
+        {% endfor %}
+        <details class="recipe-header__more" hidden>
+          <summary>{{ widget_messages.more | escape }}</summary>
+          <div class="recipe-header__more-items"></div>
+        </details>
+      </nav>
+    {% endif %}
+    <dialog class="recipe-header__dialog" aria-label="{{ widget_messages.catalog | escape }}">
+      <div class="recipe-header__panel">
+        <div class="recipe-header__panel-heading">
+          <strong>{{ widget_messages.catalog | escape }}</strong>
+          <button class="recipe-header__close" type="button" autofocus>{{ widget_messages.close | escape }} ×</button>
+        </div>
+        <nav aria-label="{{ widget_messages.catalog | escape }}">
+          <ul class="recipe-header__categories" data-navigation>
+            {% for category in collections.root_category.subcollections %}
               <li data-navigation-item>
-                <a href="{{ child.url }}" data-navigation-link="{{ child.url }}">{{ child.title | escape }}</a>
-                {% if child.subcollections.size > 0 %}
-                  <details>
-                    <summary>{{ widget_messages.subcategories | escape }}</summary>
-                    <ul data-navigation-submenu>
-                      {% for leaf in child.subcollections %}
-                        <li data-navigation-item><a href="{{ leaf.url }}" data-navigation-link="{{ leaf.url }}">{{ leaf.title | escape }}</a></li>
-                      {% endfor %}
-                    </ul>
+                {% if category.subcollections.size > 0 %}
+                  <details class="recipe-header__branch">
+                    <summary>{{ category.title | escape }}</summary>
+                    <div class="recipe-header__branch-content">
+                      <a class="recipe-header__category-link" href="{{ category.url }}" data-navigation-link="{{ category.url }}">{{ category.title | escape }} →</a>
+                      <ul data-navigation-submenu>
+                        {% for child in category.subcollections %}
+                          <li data-navigation-item>
+                            <a href="{{ child.url }}" data-navigation-link="{{ child.url }}">{{ child.title | escape }}</a>
+                            {% if child.subcollections.size > 0 %}
+                              <ul data-navigation-submenu>
+                                {% for leaf in child.subcollections %}
+                                  <li data-navigation-item><a href="{{ leaf.url }}" data-navigation-link="{{ leaf.url }}">{{ leaf.title | escape }}</a></li>
+                                {% endfor %}
+                              </ul>
+                            {% endif %}
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
                   </details>
+                {% else %}
+                  <a class="recipe-header__category-link" href="{{ category.url }}" data-navigation-link="{{ category.url }}">{{ category.title | escape }}</a>
                 {% endif %}
               </li>
+            {% else %}
+              <li>{{ widget_messages.empty_catalog | escape }}</li>
             {% endfor %}
           </ul>
-        </details>
-      {% endif %}
-    </li>
-  {% endfor %}
-</ul>
-{% endcapture %}
-<header class="recipe-header">
-  <div class="recipe-header__row">
-    <a class="recipe-header__logo" href="{% if language.not_default? %}/?lang={{ language.locale }}{% else %}/{% endif %}">
-      {% if widget_settings.logo %}<img src="{{ widget_settings.logo }}" alt="{{ account.title | escape }}">{% else %}{% default_logo %}{% endif %}
-    </a>
-    <button class="recipe-header__open" type="button" aria-expanded="false" aria-haspopup="dialog">{{ widget_messages.catalog | escape }}</button>
-    <div class="recipe-header__actions">
-      {% if settings.compare_enabled == null or settings.compare_enabled %}
-        <a href="/compares">{{ widget_messages.compare | escape }} <span class="compare-empty" data-compare-counter>0</span></a>
-      {% endif %}
-      {% if settings.favorite_enabled == true %}
-        <a href="/favorites">{{ widget_messages.favorites | escape }} <span class="favorites-empty" data-ui-favorites-counter>0</span></a>
-      {% endif %}
-      {% if account.show_cart? %}
-        <a href="{{ cart_url }}">{{ widget_messages.cart | escape }} <span class="cart-empty" data-cart-positions-count>0</span></a>
-      {% endif %}
-    </div>
-    <form class="recipe-header__search" action="/search" method="get" role="search">
-      <input type="hidden" name="lang" value="{{ language.locale }}">
-      <input type="search" name="q" autocomplete="off" data-search-field aria-label="{{ widget_messages.search | escape }}" placeholder="{{ widget_messages.search | escape }}">
-      <button type="submit">{{ widget_messages.search | escape }}</button>
-      <div class="recipe-header__results" data-search-result></div>
-    </form>
+        </nav>
+        {% if menu.links.size > 0 %}
+          <nav class="recipe-header__mobile-menu" aria-label="{{ widget_messages.menu | escape }}">
+            {% for link in menu.links %}
+              <a href="{{ link.url | escape }}">{{ link.title | escape }}</a>
+            {% endfor %}
+          </nav>
+        {% endif %}
+      </div>
+    </dialog>
   </div>
-  <nav class="recipe-header__desktop" aria-label="{{ widget_messages.catalog | escape }}">{{ category_menu }}</nav>
-  <dialog class="recipe-header__dialog" aria-label="{{ widget_messages.catalog | escape }}">
-    <div class="recipe-header__panel">
-      <button class="recipe-header__close" type="button" autofocus>{{ widget_messages.close | escape }}</button>
-      <nav aria-label="{{ widget_messages.catalog | escape }}">{{ category_menu }}</nav>
-    </div>
-  </dialog>
 </header>

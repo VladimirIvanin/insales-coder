@@ -1,0 +1,36 @@
+{
+  "ru": {
+    "logo": "Логотип",
+    "logo_alt": "Описание логотипа",
+    "menu": "Дополнительное меню",
+    "background": "Фон",
+    "text_color": "Цвет текста",
+    "accent": "Акцент",
+    "catalog": "Каталог",
+    "search": "Поиск по каталогу",
+    "search_submit": "Найти",
+    "compare": "Сравнение",
+    "favorites": "Избранное",
+    "cart": "Корзина",
+    "close": "Закрыть каталог",
+    "more": "Ещё",
+    "empty_catalog": "В каталоге пока нет категорий"
+  },
+  "en": {
+    "logo": "Logo",
+    "logo_alt": "Logo description",
+    "menu": "Additional menu",
+    "background": "Background",
+    "text_color": "Text color",
+    "accent": "Accent",
+    "catalog": "Catalog",
+    "search": "Search products",
+    "search_submit": "Search",
+    "compare": "Compare",
+    "favorites": "Favorites",
+    "cart": "Cart",
+    "close": "Close catalog",
+    "more": "More",
+    "empty_catalog": "No categories yet"
+  }
+}

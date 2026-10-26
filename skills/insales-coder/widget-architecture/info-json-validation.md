@@ -8,7 +8,6 @@ Checker проверяет `info.json` **полного пакета новог�
 node "$SKILL_DIR/scripts/validate-info-json.mjs" "$WIDGET_DIR"
 node "$SKILL_DIR/scripts/validate-info-json.mjs" --context system "$WIDGET_DIR/info.json"
 node "$SKILL_DIR/scripts/validate-info-json.mjs" --locale ru "$WIDGET_DIR"
-node "$SKILL_DIR/scripts/validate-info-json.mjs" --self-test
 ```
 
 CLI принимает несколько путей; код завершения `0` — нет структурных ошибок, `1` — ошибка аргумента, чтения, JSON или структуры. Warnings сами по себе не меняют код завершения.
@@ -49,6 +48,8 @@ SKU можно не указывать: модель генерирует его
 ## Границы и совместимость
 
 Это целевой gen4-режим, не универсальный контракт модели, HTTP API или частичного update. Модель поддерживает gen2/3 и defaults, но пропущенная generation может дать 2/3 — для нового gen4-пакета checker требует явное `4`. При update folder service игнорирует type/handle/block_template_handle; checker всё равно ожидает полный пакет для создания.
+
+`multilink.all` не входит в поддерживаемый этим checker набор `page_kinds`. Если такой виджет уже существует в целевой платформе, сверяй допустимость значения с её версией: существующая запись сама по себе не подтверждает возможность нового импорта. Не заменяй значение на `all` автоматически — это меняет область показа виджета.
 
 Существование категории, block template и libraries, ownership фактического импорта, уникальность, остальные файлы JSON, Liquid/JS/SCSS, зависимости и поведение витрины checker не проверяет. Успешный запуск означает только прохождение перечисленных структурных проверок. Неизвестные libraries платформа может исключить при lookup; это не доказывает доступность зависимости.
 

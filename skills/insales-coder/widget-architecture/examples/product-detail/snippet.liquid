@@ -1,0 +1,140 @@
+{% if product %}
+  {% assign first_variant = product.variants.first %}
+  {% assign first_photo = product.images.first %}
+  {% assign can_purchase = false %}
+  {% if account.show_cart? and product.show_cart_button and first_variant %}
+    {% unless product.is_bundle or product.accessories.size > 0 %}
+      {% assign can_purchase = true %}
+    {% endunless %}
+  {% endif %}
+  {% assign allow_unavailable = false %}
+  {% if settings.product_not_available == 'shown' and account.forbid_order_over_existing == false %}
+    {% assign allow_unavailable = true %}
+  {% endif %}
+  {% capture availability_config %}
+    {"availableText": {{ widget_settings.available-label | json }},
+     "notAvailableText": {{ widget_settings.unavailable-label | json }}}
+  {% endcapture %}
+
+  <div class="layout__content">
+    <form
+      class="product-detail"
+      action="{{ cart_url }}"
+      method="post"
+      data-product-detail
+      data-product-id="{{ product.id }}"
+      data-product-updated-at="{{ product.updated_at }}"
+      data-product-json="{{ product | json | escape }}"
+      data-allow-unavailable="{{ allow_unavailable }}"
+      data-updating-label="{{ widget_messages.updating | escape }}"
+      data-load-error-label="{{ widget_messages.load_error | escape }}"
+    >
+      <div class="product-detail__gallery" aria-label="{{ widget_messages.gallery | escape }}">
+        <div class="product-detail__photo">
+          {% if first_photo %}
+            <img
+              data-gallery-main
+              src="{{ first_photo.original_url | image_url: 1000, resizing_type: 'fit_width' }}"
+              alt="{{ first_photo.title | default: product.title | escape }}"
+              width="1000"
+              height="1000"
+              fetchpriority="high"
+            >
+          {% else %}
+            <span class="product-detail__no-photo">{{ widget_messages.no_photo | escape }}</span>
+          {% endif %}
+        </div>
+        {% if product.images.size > 1 %}
+          <div class="product-detail__thumbnails">
+            {% for photo in product.images %}
+              <button
+                class="product-detail__thumbnail"
+                type="button"
+                data-gallery-thumbnail
+                data-photo-src="{{ photo.original_url | image_url: 1000, resizing_type: 'fit_width' }}"
+                data-photo-alt="{{ photo.title | default: product.title | escape }}"
+                aria-label="{{ widget_messages.photo | escape }} {{ forloop.index }}"
+                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+              >
+                <img
+                  src="{{ photo.original_url | image_url: 160, resizing_type: 'fit_width' }}"
+                  alt=""
+                  width="80"
+                  height="80"
+                  loading="lazy"
+                >
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product-detail__summary">
+        <h1 class="product-detail__title">{{ product.title | escape }}</h1>
+        <div class="product-detail__availability" data-product-card-available="{{ availability_config | escape }}">
+          {% if first_variant.available %}
+            {{ widget_settings.available-label | escape }}
+          {% else %}
+            {{ widget_settings.unavailable-label | escape }}
+          {% endif %}
+        </div>
+        <div class="product-detail__prices" aria-live="polite">
+          <span class="product-detail__price" data-product-card-price data-product-card-zero-price-text="{{ widget_settings.zero-price-label | escape }}">
+            {% if first_variant.price == 0 %}
+              {{ widget_settings.zero-price-label | escape }}
+            {% else %}
+              {{ first_variant.price | money }}
+            {% endif %}
+          </span>
+          <s class="product-detail__old-price" data-product-card-old-price>
+            {% if first_variant.old_price > first_variant.price and first_variant.price != 0 %}
+              {{ first_variant.old_price | money }}
+            {% endif %}
+          </s>
+        </div>
+
+        {% if product.show_variants? %}
+          <div class="product-detail__variants">
+            <select name="variant_id" aria-label="{{ widget_settings.variants-label | escape }}" data-product-variants='{"default":"option-select"}'>
+              {% for variant in product.variants %}
+                <option value="{{ variant.id }}">{{ variant.title | escape }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% elsif first_variant %}
+          <input type="hidden" name="variant_id" value="{{ first_variant.id }}">
+        {% endif %}
+
+        {% if can_purchase %}
+          <fieldset class="product-detail__purchase" data-purchase-controls disabled>
+            <legend class="product-detail__visually-hidden">{{ widget_settings.buy-label | escape }}</legend>
+            <div class="product-detail__quantity" data-quantity>
+              <button type="button" data-quantity-change="-1" aria-label="{{ widget_messages.decrease | escape }}">−</button>
+              <label class="product-detail__quantity-label">
+                <span class="product-detail__visually-hidden">{{ widget_settings.quantity-label | escape }}</span>
+                <input type="text" name="quantity" value="1" inputmode="decimal" autocomplete="off">
+              </label>
+              <button type="button" data-quantity-change="1" aria-label="{{ widget_messages.increase | escape }}">+</button>
+            </div>
+            <button class="product-detail__buy" type="submit" data-item-add>{{ widget_settings.buy-label | escape }}</button>
+          </fieldset>
+          <p class="product-detail__status" data-purchase-status role="status">{{ widget_messages.updating | escape }}</p>
+          <noscript><p>{{ widget_messages.load_error | escape }}</p></noscript>
+        {% else %}
+          <div data-quantity hidden><input type="hidden" name="quantity" value="1"></div>
+          <p class="product-detail__purchase-note">{{ widget_settings.purchase-hidden-label | escape }}</p>
+        {% endif %}
+
+        {% if product.short_description != blank %}
+          <div class="product-detail__intro">{{ product.short_description | editable }}</div>
+        {% endif %}
+      </div>
+      {% if product.description != blank %}
+        <div class="product-detail__description">
+          <h2>{{ widget_messages.description | escape }}</h2>
+          {{ product.description | editable }}
+        </div>
+      {% endif %}
+    </form>
+  </div>
+{% endif %}

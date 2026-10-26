@@ -90,7 +90,6 @@ export function validateInfoJson(info, { context = 'custom', locale } = {}) {
 
 const usage = `Usage:
   node "$SKILL_DIR/scripts/validate-info-json.mjs" [--context custom|system] [--locale ru] <info.json|widget-folder> [...]
-  node "$SKILL_DIR/scripts/validate-info-json.mjs" --self-test
 
 Структура info.json полного gen4-пакета. Контекст по умолчанию custom;
 передайте system для folder/git импорта без account/theme. Locale необязательна.
@@ -101,11 +100,6 @@ async function main() {
   if (args.includes('--help') || args.includes('-h') || !args.length) {
     console.log(usage)
     return args.length ? 0 : 1
-  }
-  if (args.length === 1 && args[0] === '--self-test') {
-    const { runSelfTest } = await import('./validate-info-json.test.mjs')
-    runSelfTest()
-    return 0
   }
   const options = {}
   const paths = []

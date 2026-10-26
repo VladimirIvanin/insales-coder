@@ -1,0 +1,179 @@
+.recipe-header {
+  min-width: 0;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__logo {
+    flex: 0 1 12rem;
+    min-width: 0;
+  }
+
+  &__logo img,
+  &__logo svg {
+    display: block;
+    max-width: 100%;
+    max-height: 5rem;
+    object-fit: contain;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    min-width: 0;
+  }
+
+  a,
+  summary {
+    overflow-wrap: anywhere;
+  }
+
+  &__open {
+    display: none;
+  }
+
+  &__search {
+    position: relative;
+    display: flex;
+    flex: 1 1 18rem;
+    min-width: 0;
+  }
+
+  &__search input[type="search"] {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  &__results {
+    display: none;
+    position: absolute;
+    inset: 100% 0 auto;
+    z-index: 20;
+    background: #fff;
+    color: #222;
+    max-height: unquote("min(50vh, 24rem)");
+    overflow: auto;
+    box-shadow: 0 .3rem 1rem #0003;
+  }
+
+  &__search.is-show &__results {
+    display: block;
+  }
+
+  .ajax-search-results {
+    margin: 0;
+    padding: .5rem;
+    list-style: none;
+  }
+
+  .ajax-search-link {
+    display: block;
+    padding: .5rem;
+    overflow-wrap: anywhere;
+  }
+
+  .ajax-search-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+
+  .ajax_search-marked {
+    font-weight: bold;
+  }
+
+  .cart-empty,
+  .compare-empty,
+  .favorites-empty {
+    display: none;
+  }
+
+  &__tree,
+  &__tree ul {
+    list-style: none;
+    margin: 0;
+    padding: .5rem;
+  }
+
+  &__tree ul {
+    padding-inline-start: 1rem;
+  }
+
+  &__tree li {
+    padding: .25rem;
+  }
+
+  &__tree summary {
+    cursor: pointer;
+  }
+
+  &__tree a.is-current {
+    font-weight: bold;
+  }
+
+  // Disclosures stay in flow: no hover-only submenu or clipped flyout.
+  &__desktop {
+    overflow-x: auto;
+  }
+
+  &__desktop > ul {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  &__desktop > ul > li {
+    flex: 0 0 14rem;
+  }
+
+  &__dialog {
+    padding: 0;
+    border: 0;
+    margin: 0 0 0 auto;
+    width: unquote("min(92vw, 28rem)");
+    max-width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100%;
+    overflow: hidden;
+  }
+
+  &__dialog::backdrop {
+    background: #0008;
+  }
+
+  &__panel {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    &__open {
+      display: inline-block;
+    }
+
+    &__desktop {
+      display: none;
+    }
+
+    &__search {
+      flex-basis: 100%;
+    }
+
+    &__logo {
+      flex-basis: 9rem;
+    }
+
+    &__actions {
+      flex-basis: 100%;
+    }
+  }
+}

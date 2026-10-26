@@ -1,0 +1,45 @@
+{
+  "content": [
+    {
+      "items": [
+        {
+          "name": "logo",
+          "label": "{{ messages.logo }}",
+          "type": "file",
+          "branding_field": "logo"
+        },
+        {
+          "name": "logo-alt",
+          "label": "{{ messages.logo_alt }}",
+          "type": "text"
+        },
+        {
+          "name": "menu-handle",
+          "label": "{{ messages.menu }}",
+          "type": "navigation"
+        }
+      ]
+    }
+  ],
+  "design": [
+    {
+      "items": [
+        {
+          "name": "header-bg",
+          "label": "{{ messages.background }}",
+          "type": "color"
+        },
+        {
+          "name": "header-color",
+          "label": "{{ messages.text_color }}",
+          "type": "color"
+        },
+        {
+          "name": "header-accent",
+          "label": "{{ messages.accent }}",
+          "type": "color"
+        }
+      ]
+    }
+  ]
+}
