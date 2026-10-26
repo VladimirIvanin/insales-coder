@@ -230,19 +230,22 @@ new TvistV1('.js-slider', {
 - `scrollbar`: `true` или объект (`container`, `hide`, `hideDelay`, ...).
 
 ```js
-new TvistV1('.js-slider', {
+// root — корень текущего виджета, sliderRoot — его элемент .tvist-v1.
+new TvistV1(sliderRoot, {
   arrows: {
-    prev: '.js-prev',
-    next: '.js-next',
+    prev: root.querySelector('.js-prev'),
+    next: root.querySelector('.js-next'),
     disabledClass: 'is-disabled'
   },
   pagination: {
-    container: '.js-pagination',
+    container: root.querySelector('.js-pagination'),
     type: 'bullets',
     clickable: true
   }
 })
 ```
+
+Строковые `arrows.prev`/`next` в этой сборке разрешаются от `document`. Для нескольких экземпляров используй DOM-элементы своего root, как в примере. Кнопки нужно создать в разметке; отсутствие кастомного элемента не включает его автоматическую генерацию.
 
 ## Автоматизация и медиа
 

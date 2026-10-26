@@ -53,10 +53,11 @@ skills/
 ## Валидация info.json
 
 ```bash
-node skills/insales-coder/scripts/validate-info-json.mjs path/to/widget-folder
+node /absolute/path/to/insales-coder/scripts/validate-info-json.mjs /path/to/widget-folder
+# Для системного пакета: добавьте --context system
 ```
 
-Проверяет обязательные поля, enum-значения и правило **sku только для системных виджетов** (`handle` → `system_*`).
+Проверяет структуру `info.json` полного gen4-пакета без MCP. Укажите фактический абсолютный путь установленного скилла. Контекст по умолчанию `custom`, системный задаётся через `--context system`; `--locale ru` проверяет имя выбранного языка. SKU допустим в обоих контекстах при соответствующем формате. Это не проверка ссылок и runtime. [Контракт и ограничения](skills/insales-coder/widget-architecture/info-json-validation.md).
 
 ## Когда применять
 

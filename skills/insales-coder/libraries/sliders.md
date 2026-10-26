@@ -2,58 +2,99 @@
 
 ## Новый слайдер: `tvist-v1`
 
-Handle загружает CSS и два JS-файла — ядро и модули. Глобальный конструктор — `TvistV1`; отдельного `.mount()` нет. На дату исследования подключаемые файлы объявляли **Tvist 1.16.11**, хотя запись каталога называлась `tvist@1.0.0`. Перед применением новых опций проверь текущую сборку через каталог магазина. Полный перечень методов — в [справочнике Tvist](../splide-to-tvist/tvist-reference.md); шаги переноса старого виджета — в [миграции](../splide-to-tvist/reference.md).
+Handle загружает CSS и два JS-файла — ядро и модули. Глобальный конструктор — `TvistV1`; отдельного `.mount()` нет. На дату исследования подключаемые файлы объявляли **Tvist 1.16.11**, хотя запись каталога называлась `tvist@1.0.0`. Перед применением новых опций проверь доступный исходник подключаемой сборки, а при доступе к магазину — её актуальную запись каталога. Полный перечень методов — в [справочнике Tvist](../splide-to-tvist/tvist-reference.md); шаги переноса старого виджета — в [миграции](../splide-to-tvist/reference.md).
 
-Пример основан на системном виджете `system_widget_v4_article_previews_2`: несколько экземпляров, разметка track → container → slide и реакция на изменения редактора. Его старый `info.json` использует `EventBus` без собственного `commonjs_v2`; ниже зависимость объявлена явно. Для самостоятельного виджета здесь нужны CSS `my-layout`, `$widget`/`$` из `jquery`, события `EventBus` из `commonjs_v2` и Tvist:
+**Разметка — часть API Tvist.** Сохраняй вложенность `.tvist-v1` → `.tvist-v1__track` → `.tvist-v1__container` → `.tvist-v1__slide`. Свои классы оформления добавляй рядом: `class="tvist-v1__track advantages__track"`. Замена штатных классов без явной поддерживаемой настройки селекторов ломает конструктор (`track not found`); произвольный стиль не отменяет контракт библиотеки.
 
-```json
-{ "libraries": ["my-layout", "jquery", "commonjs_v2", "tvist-v1"] }
+«Три карточки на desktop, одна на mobile» задаёт число **видимых** слайдов (`perPage`), а не обязательно размер всего списка. Ниже один цельный пример инициализации: сохраняй его lifecycle при адаптации разметки.
+
+При нескольких экземплярах передавай стрелки как DOM-элементы своего виджета. Строковые `prev`/`next` в этой сборке ищутся через `document.querySelector` и могут связать все экземпляры с первой парой кнопок:
+
+```js
+arrows: {
+  prev: root.querySelector('.js-slider-prev'),
+  next: root.querySelector('.js-slider-next')
+}
 ```
 
+Сами кнопки должны присутствовать в разметке; конструктор не создаёт отсутствующие кастомные элементы. Условие «заголовок заполнен» должно скрывать только заголовок, сохраняя стрелки для ленты. Область поиска `pagination.container` зависит от сборки; для независимости также передавай найденный внутри экземпляра DOM-элемент.
+
+Для редактируемого списка карточек выбирай BlockList и совместимый шаблон блоков; [готовый вариант content-карточки](../widget-architecture/reference.md#блоки-схема-шаблона-и-defaults) не требует выдуманных `block.link` или других полей. Фиксированные поля `card-1`, `card-2`, `card-3` подходят, когда задача требует именно фиксированные слоты. Сохраняй доступ к остальным карточкам и обработку короткого/пустого списка.
+
+`Number()` подходит для числового `data-slide-gap="20"`, но не для CSS-значения `20px`. Для пиксельной CSS-переменной:
+
+```js
+const rawGap = parseFloat(getComputedStyle(root).getPropertyValue('--card-gap'))
+const gap = Number.isFinite(rawGap) ? rawGap : 20
+```
+
+Так сохраняется и допустимый нулевой отступ. Для `rem`, `%` и других единиц одного `parseFloat` недостаточно: приведи значение к требуемым библиотекой пикселям либо передавай отдельное числовое значение.
+
+## Цельный пример слайдера
+
+Для этого примера объяви `jquery` и `tvist-v1` в `libraries`; `my-layout` добавь, если используешь его layout-классы. Данные `data.blocks` предполагают BlockList и схему `content` из примера архитектуры. Оформление выбирай по задаче.
+
 ```liquid
-<div class="tvist-v1 js-article-slider"
-     data-slide-min-size="{{ widget_settings.slide-width | default: 220 }}"
-     data-slide-gap="{{ widget_settings.slide-gap | default: 16 }}">
+<div class="slider-heading">
+  {% if widget_settings.title != blank %}
+    <h2>{{ widget_settings.title | escape }}</h2>
+  {% endif %}
+  <button class="tvist-v1__arrow js-slider-prev" type="button" aria-label="Назад">←</button>
+  <button class="tvist-v1__arrow js-slider-next" type="button" aria-label="Вперёд">→</button>
+</div>
+<div class="tvist-v1 js-cards-slider"
+     data-slide-gap="{{ widget_settings.slide-gap | default: 20 }}">
   <div class="tvist-v1__track">
     <div class="tvist-v1__container">
-      {% for article in blogs[widget_settings.permalink_blog].articles limit: 8 %}
-        <a class="tvist-v1__slide" href="{{ article.url }}">{{ article.title | escape }}</a>
+      {% for block in data.blocks %}
+        <article class="tvist-v1__slide">{{ block.content }}</article>
       {% endfor %}
     </div>
   </div>
-  <div class="tvist-v1__pagination"></div>
 </div>
 ```
+
+Подписи кнопок также вынеси в messages/настройки готового пакета.
 
 ```js
 $(function () {
   $widget.each(function (_, root) {
-    const sliderRoot = root.querySelector('.js-article-slider')
-    if (!sliderRoot) return
+    const cleanupKey = '__cardsSliderCleanup'
+    if (root[cleanupKey]) root[cleanupKey]()
+    const sliderRoot = root.querySelector('.js-cards-slider')
+    if (!sliderRoot || !sliderRoot.querySelector('.tvist-v1__slide')) return
 
+    const rawGap = Number(sliderRoot.dataset.slideGap)
     const slider = new TvistV1(sliderRoot, {
-      slideMinSize: Number(sliderRoot.dataset.slideMinSize),
-      gap: Number(sliderRoot.dataset.slideGap),
-      pagination: { type: 'bullets', clickable: true }
-    })
-
-    const editorWidgetId = $(root).closest('.editable-widget').data('widgetId')
-    EventBus.subscribe(
-      ['widget:input-setting:insales:system:editor', 'widget:change-setting:insales:system:editor'],
-      function (data) {
-        if (String(data.widget_id) !== String(editorWidgetId)) return
-        if (data.setting_name === 'slide-width') {
-          slider.updateOptions({ slideMinSize: Number(data.value) })
-        } else if (data.setting_name === 'slide-gap') {
-          slider.updateOptions({ gap: Number(data.value) })
-        }
+      perPage: 3,
+      gap: Number.isFinite(rawGap) ? rawGap : 20,
+      breakpoints: { 767: { perPage: 1 } },
+      arrows: {
+        prev: root.querySelector('.js-slider-prev'),
+        next: root.querySelector('.js-slider-next'),
+        hideWhenSinglePage: true
       }
-    )
+    })
+    let active = true
+    function destroy() {
+      if (!active) return
+      active = false
+      observer.disconnect()
+      slider.destroy()
+      delete root[cleanupKey]
+    }
+    const observer = new MutationObserver(function () {
+      if (!root.isConnected || !root.contains(sliderRoot)) destroy()
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+    root[cleanupKey] = destroy
   })
 })
 ```
 
-В редакторе при удалении или пересоздании экземпляра снимай свою подписку и вызывай `destroy()` для старого слайдера. Источники: подключаемые ядро и модули из каталога магазина, [публичная документация проекта](https://github.com/VladimirIvanin/tvist).
+Хранения функции на `root[cleanupKey]` **недостаточно для удаления**: её должен вызвать владелец или observer, как здесь. Для новой разметки снова нужен запуск initializer. Если владелец предоставляет teardown, используй его вместо observer; не убирай observer без подключения этого teardown. Проверь два запуска, затем удаление одного из двух экземпляров: старый слайдер уничтожен, соседний работает. Полный контракт, включая собственные EventBus-подписки редактора, — в [runtime.md](../widget-architecture/runtime.md); при использовании EventBus добавь `commonjs_v2` и сними свою подписку в destroy.
+
+Исходный API: подключаемые ядро и модули из каталога магазина, [документация Tvist](https://github.com/VladimirIvanin/tvist). Без доступной сборки укажи, что совместимость с целевым runtime ещё не проверена.
 
 ## Существующие Splide
 

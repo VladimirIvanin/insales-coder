@@ -167,12 +167,13 @@ $widget.each(function(index, el) {
 - Не ставь `type="image/webp"` для `large_url`, если URL не webp; `type` должен совпадать с реальным MIME
 - `loading="lazy"` указывай на `<img>` (для `<source>` это нерабочий/игнорируемый атрибут)
 
-Рекомендуемый паттерн:
+Ниже обработчик обновления изображения. При установке привяжи его к init/cleanup по [runtime.md](../widget-architecture/runtime.md); это не самостоятельный lifecycle-пример.
 
 ```js
 $(function() {
   $widget.each(function(index, el) {
     EventBus.subscribe('change_variant:insales:product', function(data) {
+      if (!data || !data.action || !data.action.product || !data.action.product[0]) return
       const productNode = $(data.action.product[0])
       const isCurrentWidgetInstance = productNode.parents('.layout:first').is($(el))
       if (!isCurrentWidgetInstance) { return }
@@ -259,7 +260,7 @@ $(document).ready(function() {
 
 ## Реакция на изменение настроек в редакторе
 
-Для обновления слайдера/компонента при изменении настроек в режиме редактирования:
+Для обновления компонента при изменении настроек сопоставляй `widget_id` конкретному экземпляру. Снятие callback и уничтожение компонента показаны в [примере слайдера](../libraries/sliders.md); фрагмент ниже показывает только фильтрацию события:
 
 ```js
 $(function() {

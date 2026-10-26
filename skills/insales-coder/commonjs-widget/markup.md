@@ -77,6 +77,8 @@
 </div>
 ```
 
+При проверке покупки учитывай инициализацию и асинхронную смену варианта: сразу после выбора введи другое количество и добавь, затем проверь реальную корзину. Не сбрасывай количество на каждом событии; подробнее — [состояния товара](../widget-architecture/runtime.md#выбор-варианта-и-количество). Без витрины этот сценарий остаётся непроверенным.
+
 ## Цены и наличие
 
 ```liquid
@@ -91,6 +93,18 @@
 }'></span>
 <div data-product-card-sale-value></div>
 ```
+
+Если подписи редактируются, сначала сериализуй каждое значение как JSON, затем экранируй **весь объект** для HTML-атрибута. Один `escape` внутри JSON не защищает от кавычек после декодирования HTML:
+
+```liquid
+{% capture availability_config %}
+  {"availableText": {{ widget_settings.available-label | json }},
+   "notAvailableText": {{ widget_settings.not-available-label | json }}}
+{% endcapture %}
+<span data-product-card-available="{{ availability_config | escape }}"></span>
+```
+
+Проверь подпись с кавычками, апострофом и `&`: значение атрибута, прочитанное из DOM, должно разбираться через `JSON.parse`. Этот порядок нужен для всех динамических JSON-атрибутов common.js.
 
 ## Быстрая покупка
 
@@ -176,6 +190,8 @@
 | `data-cart-item-count` | Количество товаров |
 | `data-cart-discounts-ajax` | Информация о скидках (требует `data-reload-on-coupon="false"` на форме) |
 | `data-cart-discounts-error` | Ошибки купона |
+
+`cart-empty` для счётчика позиций common.js переключает на `[data-cart-positions-count]`. Размещай начальный класс и CSS скрытия на этом узле; родительская ссылка автоматически его не снимает.
 
 Купон:
 

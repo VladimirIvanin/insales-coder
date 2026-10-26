@@ -1,75 +1,63 @@
-# Валидация info.json
+# Структурная проверка info.json
 
-Перед синхронизацией с бэкендом (`WidgetTypesFolderSyncService` / git sync) проверяй `info.json` локальным валидатором скилла:
+Checker проверяет `info.json` **полного пакета нового gen4-виджета**: обязательные поля, типы, enum и формат SKU. Запускай его после создания или правки `info.json`. Это локальная проверка без MCP, магазина и Rails; остальные файлы пакета проверяются отдельно.
 
-```bash
-node skills/insales-coder/scripts/validate-info-json.mjs path/to/widget-folder
-# или
-node skills/insales-coder/scripts/validate-info-json.mjs path/to/info.json
-```
-
-Self-test:
+Найди фактическую директорию загруженного скилла и используй абсолютный путь к скрипту: установленный скилл может находиться вне рабочего репозитория. В командах `SKILL_DIR` — каталог, содержащий прочитанный `SKILL.md`, а `WIDGET_DIR` — каталог проверяемого виджета. Задай переменные для своей установки:
 
 ```bash
-node skills/insales-coder/scripts/validate-info-json.mjs --self-test
+node "$SKILL_DIR/scripts/validate-info-json.mjs" "$WIDGET_DIR"
+node "$SKILL_DIR/scripts/validate-info-json.mjs" --context system "$WIDGET_DIR/info.json"
+node "$SKILL_DIR/scripts/validate-info-json.mjs" --locale ru "$WIDGET_DIR"
+node "$SKILL_DIR/scripts/validate-info-json.mjs" --self-test
 ```
 
-Агент **обязан** запускать валидатор после создания или правки `info.json`.
+CLI принимает несколько путей; код завершения `0` — нет структурных ошибок, `1` — ошибка аргумента, чтения, JSON или структуры. Warnings сами по себе не меняют код завершения.
 
----
+## Контекст владения
 
-## sku — только системные виджеты
+По умолчанию используется `--context custom`, поскольку основной сценарий скилла — новый кастомный виджет. Контекст задаётся вызывающим агентом, **не выводится из handle**:
 
-| Виджет | Признак | sku в info.json |
-|--------|---------|-----------------|
-| Системный | `handle` начинается с `system_` | **Нужен** для `generation: 4` (формат `^[A-Z0-9]+$`, например `MW1`, `BB1`) |
-| Кастомный | `handle` **не** начинается с `system_` | **Не указывать** — sku генерирует бэкенд (`WidgetTypesSkuService`) |
+| Контекст | Реальный импорт | Handle | SKU при наличии |
+|---|---|---|---|
+| `custom` | С account_id и theme_id | Непустой, латиница/цифры/`_`/`-`, без `system_` в начале | `[A-Z0-9]+.digits`, например `CU0.1` |
+| `system` | Без account/theme | Непустой, начинается с `system_` | `[A-Z0-9]+`, например `MW1` |
 
-Если у кастомного виджета указать `sku`, бэкенд упадёт на валидации формата (`CU0.N` для custom, не `MW1`).
+`--context` только выбирает проверки: он не добавляет ownership в JSON и не передаёт его платформе. Folder/git импорт без account/theme создаёт системную запись даже с кастомным handle. При таком импорте обязательно передай `--context system`.
 
-Экспорт кастомного виджета из темы (`ThemeWidgetType::ExportToHash`) **не включает** `sku` — это ожидаемое поведение.
+SKU можно не указывать: модель генерирует его перед валидацией. Экспорт кастомного виджета обычно не содержит SKU; явно заданный custom SKU допустим при правильном формате. Уникальность SKU и handle проверяет платформа.
 
----
+## Проверяемые поля
 
-## Обязательные поля
+| Поле | Правило checker |
+|---|---|
+| `generation` | Явно `4` |
+| `type` | Только `SimpleWidgetType`, `simpleWidgetType`, `simple_widget_type`, `BlockListWidgetType`, `blockListWidgetType`, `block_list_widget_type` |
+| `handle` | Непустая строка и префикс согласно контексту |
+| `name` | Непустая строка или объект переводов с хотя бы одним непустым значением |
+| `widget_category_handle` | Непустая строка |
+| `page_kinds` | Массив из `all`, `index`, `collection`, `product`, `cart`, `page`, `search`, `blog`, `compare`, `favorite`, `article`, `shared_cart`; `[]` допустим |
+| `widget_list_kinds` | Массив из `header`, `before_content`, `content`, `sidebar`, `after_content`, `footer`, `outside`, `top_panel`, `bottom_panel`; `[]` допустим |
+| `block_template_handle` | Непустая строка для BlockList; у Simple нет этого setter для folder sync |
+| `description` | Необязательно; строка, объект переводов или null. Пустые строка и объект допустимы |
+| `libraries` | При наличии и не null — массив непустых строк; `[]` допустим |
+| `visibility` | При непустом значении — массив из `lite`, `service`, `pro`; `[]` допустим |
 
-| Поле | Правило |
-|------|---------|
-| `type` | `SimpleWidgetType` / `block_list_widget_type` (snake_case тоже ок) |
-| `handle` | Системный: `system_*`. Кастомный: `[a-zA-Z0-9_-]+`, без префикса `system_` |
-| `name` | Строка или объект `{ ru, en, ua, es }` |
-| `widget_category_handle` | Handle существующей категории |
-| `page_kinds` | Непустой массив из: `all`, `index`, `collection`, `product`, `cart`, `page`, `search`, `blog`, `compare`, `favorite`, `article`, `shared_cart` |
-| `widget_list_kinds` | Непустой массив из: `header`, `before_content`, `content`, `sidebar`, `after_content`, `footer`, `outside`, `top_panel`, `bottom_panel` |
-| `generation` | `2`, `3` или `4` (для новых виджетов — `4`) |
+Переводы могут содержать строки и null; список языков не дублируется. Без `--locale` checker проверяет наличие хотя бы одного непустого имени и не обещает его наличие в текущем языке магазина. С `--locale ru` объект `name` должен содержать непустой `ru`; непустая строка `name` принимается и в этом режиме. Null/пустые переводы других локалей допустимы.
 
-### BlockListWidgetType
+Неизвестное checker поле даёт warning о непроверенном setter. Это не запрет и не обещание игнорирования: folder sync передаёт поля непосредственно модели, и если setter отсутствует, получит `ActiveModel::UnknownAttributeError`. Checker знает обычные поля пакета и известные столбцы модели, включая `git_branch`, но не перечисляет все setters каждой версии платформы. Сверь warning с документацией целевой версии или результатом импорта в доступной тестовой среде.
 
-Дополнительно обязателен `block_template_handle` (handle системного или аккаунтного шаблона блока).
+## Границы и совместимость
 
-Для `SimpleWidgetType` поле `block_template_handle` **не должно** присутствовать.
+Это целевой gen4-режим, не универсальный контракт модели, HTTP API или частичного update. Модель поддерживает gen2/3 и defaults, но пропущенная generation может дать 2/3 — для нового gen4-пакета checker требует явное `4`. При update folder service игнорирует type/handle/block_template_handle; checker всё равно ожидает полный пакет для создания.
 
----
+Существование категории, block template и libraries, ownership фактического импорта, уникальность, остальные файлы JSON, Liquid/JS/SCSS, зависимости и поведение витрины checker не проверяет. Успешный запуск означает только прохождение перечисленных структурных проверок. Неизвестные libraries платформа может исключить при lookup; это не доказывает доступность зависимости.
 
-## Опциональные поля
+Node API сохраняет результат `{ errors: string[], warnings: string[] }` и получает опции вторым аргументом:
 
-| Поле | Формат |
-|------|--------|
-| `description` | Строка или объект переводов |
-| `libraries` | Массив строк — handle из `WidgetLibrary` (валидатор проверяет только формат, не whitelist) |
-| `visibility` | Массив: `lite`, `service`, `pro` |
+```js
+validateInfoJson(info, { context: 'system', locale: 'ru' })
+```
 
----
+Вызов `validateInfoJson(info)` теперь означает custom без фиксированной локали. Прежние вызывающие код/скрипты для системного корпуса должны явно передать `{ context: 'system' }`; прежнее определение владения по handle удалено.
 
-## Типичные ошибки бэкенда
-
-| Ошибка | Причина |
-|--------|---------|
-| `type: Не указан тип виджета` | Пустое или отсутствующее `type` |
-| `type: Поле type имеет неверное значение` | Неизвестный класс (не Simple/BlockList) |
-| `handle: Должен начинаться с system_` | Системный виджет без префикса |
-| `sku: ...` | Неверный формат sku или sku у кастомного виджета |
-| `block_template: can't be blank` | BlockList без `block_template_handle` |
-| `page_kinds / widget_list_kinds is not valid` | Значение вне допустимого enum |
-
-Источник правил: `WidgetType`, `WidgetTypesFolderSyncService`, `WidgetTypeContract`.
+Checker описывает формат пакета для импорта из файлов. HTTP API — другой входной путь; его фильтрация полей не является контрактом файлового импорта.

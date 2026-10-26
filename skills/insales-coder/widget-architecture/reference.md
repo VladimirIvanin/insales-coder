@@ -60,6 +60,8 @@ try {
 }
 ```
 
+DOM `id` должен быть уникален для экземпляра, включая два виджета одного товара. Статические `id="slider-title"` и ID только из `product.id` дублируются. Для `aria-labelledby`/`for` нужен соответствующий существующий узел с уникальным ID; без надёжного идентификатора экземпляра используй вложенный `<label>` или текстовый `aria-label` там, где это подходит. Если заголовок скрывается условием, не оставляй ссылку на отсутствующий ID.
+
 Всегда перебирай `$widget` через `.each()` — на странице может быть несколько экземпляров:
 
 ```js
@@ -68,7 +70,7 @@ $widget.each(function(index, el) {
 })
 ```
 
-Подписки на `EventBus` с мутацией DOM товара (например `change_variant:insales:product`) размещай внутри этого же `$widget.each(...)` и фильтруй по текущему `el`, иначе изменения затронут соседние инстансы виджета.
+Подписки на `EventBus` с мутацией DOM товара фильтруй по форме текущего `el`, иначе изменения затронут соседние экземпляры. Для повторной инициализации и отписки читай [runtime.md](runtime.md): guard удалённого DOM не освобождает подписку.
 
 ### snippet.scss
 
@@ -77,7 +79,7 @@ $widget.each(function(index, el) {
 Стили для разных состояний настроек через `[style*="..."]`:
 
 ```scss
-@include background-color(--bg); // первая строка в 99% виджетов
+@include background-color(--bg); // если настройка bg нужна этому виджету
 
 .my-element {
   font-size: var(--font-size, 16px);
@@ -88,11 +90,13 @@ $widget.each(function(index, el) {
 }
 ```
 
+Стили компилируются SassC/LibSass: современный CSS-синтаксис внутри известных Sass-функций может вызвать ошибку. Например, вместо `rgb(16 24 40 / 16%)` используй совместимый `rgba(16, 24, 40, .16)`. `min()`/`max()` с разными единицами LibSass тоже может попытаться вычислить сам: вместо `width: min(92vw, 28rem)` подходят `width: 92vw; max-width: 28rem`, Для сохранения CSS-вычисления подходит и `max-height: unquote("min(50vh, 24rem)")`: Sass выводит строку как CSS-функцию, а единицы вычисляет браузер. Проверяй SCSS внутри системной обёртки `&`. Компиляция другим Sass или с заглушками миксинов проверяет лишь часть совместимости; это не сборка платформой. Миксины компилятора и JS/CSS-библиотеки из `libraries` — разные зависимости.
+
 ---
 
 ## info.json
 
-**Системный виджет** (`handle` начинается с `system_`):
+**Системный виджет** (установка без владельцев account/theme; его handle должен начинаться с `system_`):
 
 ```json
 {
@@ -109,7 +113,7 @@ $widget.each(function(index, el) {
 }
 ```
 
-**Кастомный виджет** (handle без `system_`) — **без `sku`**, sku генерирует бэкенд:
+**Кастомный виджет** (при установке передаются account/theme) — обычно без `sku`, чтобы его сгенерировала платформа. Явный SKU допустим в формате кастомного типа; детали и контекст проверки — в [info-json-validation.md](info-json-validation.md):
 
 ```json
 {
@@ -124,11 +128,22 @@ $widget.each(function(index, el) {
 }
 ```
 
+`widget_category_handle` — ссылка на категорию галереи, а `widget_list_kinds` — места размещения. Их значения не взаимозаменяемы:
+
+| Назначение | Пример категории галереи | Размещение |
+|---|---|---|
+| Шапка | `headers` | `header` |
+| Преимущества | `benefits` | `content` |
+| Карточка товара | `products-cards` | `content`, страница `product` |
+| Баннер | `banner` | `content` |
+
+Это примеры штатных handles, не полный список и не гарантия наличия в конкретном каталоге. Не выводи категорию из единственного числа или места размещения (`header`, `product`, `content`). При доступном каталоге проверь категорию, шаблон блоков и библиотеки; без него используй документированный пример и укажи непроверенные ссылки. Структурный валидатор не проверяет их существование.
+
 После правки запускай валидатор → [info-json-validation.md](info-json-validation.md).
 
 **Типы виджетов:**
 - `"SimpleWidgetType"` — без блоков
-- `"blockListWidgetType"` — с блоками (нужен `block_template_handle` + `setup.json`)
+- `"BlockListWidgetType"` / `"block_list_widget_type"` — с блоками (нужен `block_template_handle`; `setup.json` задаёт блоки по умолчанию)
 
 **`page_kinds`:** `all`, `index`, `collection`, `product`, `cart`, `page`, `search`, `blog`, `article`, `favorite`, `compare`
 
@@ -137,6 +152,30 @@ $widget.each(function(index, el) {
 **`libraries`:** `commonjs_v2`, `jquery`, `my-layout`, `vanilla-lazyload`, `splide`, `splide3`, `fslightbox`, `micromodal`, `body-scroll-lock`, `js-cookie`, `cut-list`, `nouislider`, `microalert`
 
 ---
+
+## Блоки: схема шаблона и defaults
+
+`block_template_handle` выбирает существующую схему: одинаковый handle не создаёт произвольные поля из `setup.json`. Сопоставляй каждый `block.<field>` и ключ defaults с реальным полем. У блока есть и базовые свойства (например `block.title`); их не следует путать с полями шаблона, а способ задания defaults зависит от пути создания блоков.
+
+У штатного `system-image-and-content` известны поля `content` (`rich_text`), `image` (`account_file`), `hide_image` (`checkbox`), `vertical_position` и `horizontal_position` (`select`). Отдельного `link` в этой схеме нет. Для текстовой карточки можно хранить заголовок, описание и ссылку в редактируемом rich-text `content`:
+
+```json
+{
+  "blocks": [
+    {"content": {"ru": "<h3>Доставка</h3><p>Отправим заказ завтра.</p><p><a href='/page/delivery'>Подробнее</a></p>"}}
+  ]
+}
+```
+
+```liquid
+{% for block in data.blocks %}
+  <article class="tvist-v1__slide">
+    <div class="card-content">{{ block.content }}</div>
+  </article>
+{% endfor %}
+```
+
+Здесь `content` намеренно выводится как HTML из rich-text. Для независимых полей заголовка/ссылки нужен шаблон с подтверждёнными полями. Не читай `block.link` только потому, что добавил `link` в setup: неизвестное поле может исчезнуть при создании и вернуться пустым. Проверяй поля в каталоге при доступе; офлайн используй документированную схему и обозначь необходимость сверки в целевом магазине.
 
 ## settings_form.json
 
@@ -211,7 +250,7 @@ $widget.each(function(index, el) {
 }
 ```
 
-Текстовые поля с переводами — объект с ключами `ru`, `ua`, `en`, `es`.
+Текстовые поля с переводами — объект с кодами используемых языков магазина. `ru`, `ua`, `en`, `es` здесь примеры, а не полный whitelist.
 
 ---
 
@@ -266,40 +305,9 @@ $widget.each(function(index, el) {
 
 ## EventBus — события редактора
 
-Подписка на изменения настроек в визуальном редакторе:
+`widget:input-setting:insales:system:editor`, `widget:change-setting:insales:system:editor` и события цвета позволяют обновлять свой компонент без полной перерисовки. В проверенном старом редакторе payload содержит `widget_id`, `setting_name`, `value`, `unit`, `type`; `widget_id` сопоставляется с `data-widget-id` ближайшего `.editable-widget`. Не заменяй его автоматически на `data-widget-drop-item-id`: ID виджета и размещения могут отличаться. Сверяй payload с используемым редактором.
 
-```js
-EventBus.subscribe([
-  'widget:input-setting:insales:system:editor',
-  'widget:change-setting:insales:system:editor',
-  'widget:input-color:insales:system:editor'
-], (data) => {
-  // data.widget_item_id — id конкретного экземпляра виджета
-  // data.setting_name  — имя настройки (например "align-title")
-  // data.value         — новое значение
-  // data.unit          — единица измерения ("px", "rem", "%" и т.д.)
-  // data.type          — тип поля ("color", "text", "number", "select", "icon_group"...)
-})
-```
-
-Пример реакции на изменение конкретной настройки:
-
-```js
-$widget.each(function(index, el) {
-  const widgetItemId = $(el).data('widget-drop-item-id')
-
-  EventBus.subscribe([
-    'widget:input-setting:insales:system:editor',
-    'widget:change-setting:insales:system:editor',
-    'widget:input-color:insales:system:editor'
-  ], (data) => {
-    if (data.widget_item_id !== widgetItemId) return
-    if (data.setting_name === 'slide-width') {
-      // обновить слайдер
-    }
-  })
-})
-```
+Пример реакции — в [справочнике слайдеров](../libraries/sliders.md), общий init/cleanup — в [runtime.md](runtime.md). CSS-настройке или статической секции отдельная подписка нужна не всегда.
 
 ---
 

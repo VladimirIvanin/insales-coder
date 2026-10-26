@@ -438,7 +438,7 @@ root.find('.tvist-v1__slide--active img').attr('src')
 
 ### Шаг 5 — Опции
 
-> Если поведение опции неочевидно или версия бандла на платформе отличается от ожидаемой — сверься с [репозиторием Tvist](https://github.com/VladimirIvanin/tvist) (исходники, `docs/api/options.md`, `browser-build/tvist.css`). Локальная копия в workspace: `.cursor/tvist-main`.
+> Если поведение опции неочевидно или версия бандла на платформе отличается от ожидаемой — сверься с [репозиторием Tvist](https://github.com/VladimirIvanin/tvist) и [документацией](https://vladimirivanin.github.io/tvist/) для используемой версии.
 
 | Splide | TvistV1 | Статус |
 |---|---|---|
@@ -1051,11 +1051,6 @@ tvist = new TvistV1(root, newOptions)
 - Справочник опций: `docs/api/options.md`, метаданные `docs/.vitepress/options-meta.json`
 
 **Если агент не может точно решить задачу миграции** (неочевидная опция, изменившееся поведение, расхождение со скиллом) — **обязательно** загляни в репозиторий: исходники модулей (`src/modules/`), базовые стили (`src/styles/`), актуальный `browser-build/tvist.css`. Не угадывай по памяти.
-
-**Локальные копии в workspace** (для офлайн-сверки):
-
-- Tvist: `.cursor/tvist-main`
-- Splide: `.cursor/splide-master`
 
 ---
 
