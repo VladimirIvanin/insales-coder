@@ -6,27 +6,46 @@ Agent Skill для разработки виджетов InSales 4-го поко
 
 ## Установка
 
-```bash
-npx skills add VladimirIvanin/insales-coder
-```
+Нужны Node.js 22.20+ (с npm/npx), Git и доступ к npm и GitHub. Запустите из каталога проекта:
 
-Конкретный скилл:
+Установка одной командой без вопросов и подтверждений:
 
 ```bash
-npx skills add VladimirIvanin/insales-coder@insales-coder
+npx --yes skills add VladimirIvanin/insales-coder --skill insales-coder --yes
 ```
 
-Глобально (для всех проектов):
+Первый `--yes` относится к `npx`: разрешает загрузку утилиты `skills` без вопроса `Ok to proceed?`. Второй относится к `skills`: отключает её вопросы и устанавливает `insales-coder` для обнаруженных агентов в текущем проекте. Это два отдельных параметра — [документация npx](https://docs.npmjs.com/cli/v11/commands/npx/), [параметры skills add](https://github.com/vercel-labs/skills/blob/main/docs/commands.md#skills-add).
+
+Для конкретного агента добавьте `--agent`:
 
 ```bash
-npx skills add VladimirIvanin/insales-coder -g
+# Codex
+npx --yes skills add VladimirIvanin/insales-coder --skill insales-coder --agent codex --yes
+
+# Cursor
+npx --yes skills add VladimirIvanin/insales-coder --skill insales-coder --agent cursor --yes
+
+# Claude Code
+npx --yes skills add VladimirIvanin/insales-coder --skill insales-coder --agent claude-code --yes
 ```
 
-Только для Cursor:
+Для установки во все проекты пользователя добавьте `--global`:
 
 ```bash
-npx skills add VladimirIvanin/insales-coder --agent cursor -y
+npx --yes skills add VladimirIvanin/insales-coder --skill insales-coder --global --yes
 ```
+
+Проверить установку в текущем проекте (для глобальной добавьте `--global`):
+
+```bash
+npx --yes skills list
+```
+
+Если хотите выбрать агентов и способ установки вручную, запустите `npx --yes skills add VladimirIvanin/insales-coder`.
+
+### Ошибка `npm error canceled`
+
+Если ошибка появилась сразу после `Ok to proceed? (y)`, npm отменил загрузку утилиты `skills`, и установка скилла ещё не началась. Для подтверждения нужна латинская `y`: кириллическая `у` не подходит. Используйте команду с двумя `--yes` выше, чтобы пропустить оба этапа подтверждения.
 
 ## Скиллы
 
